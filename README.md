@@ -17,32 +17,37 @@ All the options can be found in <i>3D View >> Sidebar ('n') >> PatBlend</i>
 
 <b><u>How to use:</u></b>
 <b>Render Setup</b>
-1. Open a new Blender file
-2. Press "n" to open the 3D Viewport Sidebar.
-3. Select the panel titled "PatBlend" and open the section named "Render Setup"
-4. Open a subpanel of your choice
-5. After changing the settings to taste, click the Setup button at the bottom of the subpanel.
+<ol>
+  <li>Open a new Blender file</li>
+  <li>Press "n" to open the 3D Viewport Sidebar.</li>
+  <li>Select the panel titled "PatBlend" and open the section named "Render Setup"</li>
+  <li>Open a subpanel of your choice</li>
+  <li>After changing the settings to taste, click the Setup button at the bottom of the subpanel.</li>
+</ol>
 
-Unit Converter
-1. Open a new Blender file
-2. Press "n" to open the 3D Viewport Sidebar.
-3. Select the panel titled "PatBlend" and open the section named "Unit Converter"
-4. Adjust the settings, and the text at the bottom will update in realtime.
+<b>Unit Converter</b>
+<ol>
+  <li>Open a new Blender file</li>
+  <li>Press "n" to open the 3D Viewport Sidebar.</li>
+  <li>Select the panel titled "PatBlend" and open the section named "Unit Converter"</li>
+  <li>Adjust the settings, and the text at the bottom will update in realtime.</li>
+</ol>
 
-Quick Search
-1. Open a new Blender file
-2. Press "n" to open the 3D Viewport Sidebar.
-3. Select the panel titled "PatBlend" and open the section named "Quick Search"
-4. Type in anything in the text field. If you are entering an URL, the text must begin with "https://"
-5. Press the Search button.
+<b>Quick Search</b>
+<ol>
+  <li>Open a new Blender file</li>
+  <li>Press "n" to open the 3D Viewport Sidebar.</li>
+  <li>Select the panel titled "PatBlend" and open the section named "Quick Search"</li>
+  <li>Type in anything in the text field. If you are entering an URL, the text must begin with "https://"</li>
+  <li>Press the Search button.</li>
+</ol>
 
-
-A brief description of each sub-add-on:
-Render Setup:
+<b>A brief description of each sub-add-on:</b>
+<b>Render Setup:</b>
 This add-on has a user friendly interface. It quickly sets up the render engine of your choice. Right now, there are five panels: Eevee Simple, Eevee Advanced, Workbench, Cycles Simple, and Cycles Advanced. There are simple settings such as Samples, Output size, FPS, and World Color that helps an artist focus on what matters.
 
-Unit Converter:
+<b>Unit Converter:</b>
 A quick way to convert between different units of measurement. This add-on has two dropdown menus asking for the unit types, and one number field. It converts in realtime.
 
-Quick Search:
+<b>Quick Search:</b>
 Need to search for a reference image or a texture, but only have one monitor? Quick Search helps with that. All you need to do is type in an URL or a keyword and press Search. Blender will automatically open your default browser and provide you with answers.
