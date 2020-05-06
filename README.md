@@ -20,11 +20,13 @@ Render Setup
 3. Select the panel titled "PatBlend" and open the section named "Render Setup"
 4. Open a subpanel of your choice
 5. After changing the settings to taste, click the Setup button at the bottom of the subpanel.
+
 Unit Converter
 1. Open a new Blender file
 2. Press "n" to open the 3D Viewport Sidebar.
 3. Select the panel titled "PatBlend" and open the section named "Unit Converter"
 4. Adjust the settings, and the text at the bottom will update in realtime.
+
 Quick Search
 1. Open a new Blender file
 2. Press "n" to open the 3D Viewport Sidebar.
