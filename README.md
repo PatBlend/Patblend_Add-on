@@ -1,20 +1,22 @@
 # Patblend_Add-on
-A compilation of all the add-ons PatBlend has created. 
-At the time of this writing, the three add-ons that make up this are Render Setup, Unit Converter, and Quick Search. 
-All the options can be found in 3D View >> Sidebar ('n') >> PatBlend
+A compilation of all the add-ons <b>PatBlend</b> has created. 
+At the time of this writing, the three add-ons that make up this are <b>Render Setup</b>, <b>Unit Converter</b>, and <b>Quick Search</b>. 
+All the options can be found in <i>3D View >> Sidebar ('n') >> PatBlend</i>
 
 
-How to install:
-1. Open Blender. Your Blender version must be 2.8x.
-2. Go to Edit >> Preferences >> Add-ons
-3. Click the "Install add-on from file" button
-4. Navigate in the file browser and locate the python file titled "PatBlend_Add-on_vx-x-x
-5. Check the checkbox on the add-on. If you are unable to locate the add-on, simply type "PatBlend" in the search field.
-6. The add-on is ready to use!
+<b>How to install:</b>
+<ol>
+  <li>Open Blender. Your Blender version must be 2.8x.</li>
+  <li>Go to Edit >> Preferences >> Add-ons</li>
+  <li>Click the "Install add-on from file" button</li>
+  <li>Navigate in the file browser and locate the python file titled "PatBlend_Add-on_vx-x-x</li>
+  <li>Check the checkbox on the add-on. If you are unable to locate the add-on, simply type "PatBlend" in the search field.</li>
+  <li>The add-on is ready to use!</li>
+</ol>
 
 
-How to use:
-Render Setup
+<b><u>How to use:</u></b>
+<b>Render Setup</b>
 1. Open a new Blender file
 2. Press "n" to open the 3D Viewport Sidebar.
 3. Select the panel titled "PatBlend" and open the section named "Render Setup"
