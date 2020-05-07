@@ -314,9 +314,19 @@ class PatBlendAddonProperties(PropertyGroup):
 
     time_str_time: StringProperty(
         name = "Time",
-        description = "Enter time exactly in the fomat hh:mm:ss.ss"
-    )
-        
+        description = "Enter time exactly in the fomat hh:mm:ss.ss")
+
+    time_mult: FloatProperty(
+        name = "Multiplier",
+        description = "Amount to be multiplied with the input time in seconds.",
+        default = 1, min = 0)
+    
+    addon_location: EnumProperty(
+        name = "Add-on Location",
+        description = "Where the add-on appears in the UI",
+        items = [
+            ('0', "3D View > Sidebar", "Press \"n\" to view the sidebar."),
+            ('1', "Properties > Scene", "")])
 
 
 ##############################################################
@@ -636,7 +646,7 @@ class WM_OT_SearchExecute(Operator):
     
 ########## Settings ##########
 class WM_OT_GitHub(Operator):
-    bl_label = "PatBlend GitHub"
+    bl_label = "GitHub"
     bl_idname = "wm.patblend_github"
     
     def execute(self, context):
@@ -659,7 +669,7 @@ class WM_OT_GitHub(Operator):
         return {'FINISHED'}
 
 class WM_OT_PatBlendSite(Operator):
-    bl_label = "PatBlend Site"
+    bl_label = "Website"
     bl_idname = "wm.patblend_site"
     
     def execute(self, context):
@@ -753,6 +763,7 @@ class Panel:
     bl_category = "PatBlend"
     bl_options = {"DEFAULT_CLOSED"}
     
+    
 ########## Add-on Options Panel ##########
 class PATBLEND_PT_PatBlendOptionsPanel(Panel, bpy.types.Panel):
     bl_idname = "PATBLEND_PT_PatBlendOptionsPanel"
@@ -773,7 +784,9 @@ class PATBLEND_PT_PatBlendQuickOptions(Panel, bpy.types.Panel):
         prop = scene.patblend
 
         layout.prop(prop, "console")
-        layout.operator("wm.patblend_uninstall_prompt")
+        row = layout.row()
+        row.scale_y = 2.5
+        row.operator("wm.patblend_uninstall_prompt")
 
 class PATBLEND_PT_PatBlendLinks(Panel, bpy.types.Panel):
     bl_parent_id = "PATBLEND_PT_PatBlendOptionsPanel"
@@ -785,6 +798,7 @@ class PATBLEND_PT_PatBlendLinks(Panel, bpy.types.Panel):
         prop = scene.patblend
 
         row = layout.row()
+        row.scale_y = 1.2
         row.operator("wm.patblend_github")
         row.operator("wm.patblend_site")
 
@@ -811,9 +825,12 @@ class PATBLEND_PT_RenderEeveeSimpPanel(Panel, bpy.types.Panel):
         layout.prop(prop, "E_animEnd")
         layout.prop(prop, "E_fps")
         layout.separator()
-        layout.prop(prop, "E_backCol")
-        layout.prop(prop, "E_backStr")
-        layout.operator("wm.patblend_eevee_simp_setup")
+        row = layout.row(align = True)
+        row.prop(prop, "E_backCol")
+        row.prop(prop, "E_backStr")
+        row = layout.row()
+        row.scale_y = 1.5
+        row.operator("wm.patblend_eevee_simp_setup")
         layout.separator()
         
 class PATBLEND_PT_RenderEeveeAdvPanel(Panel, bpy.types.Panel):
@@ -825,22 +842,27 @@ class PATBLEND_PT_RenderEeveeAdvPanel(Panel, bpy.types.Panel):
         scene = context.scene
         prop = scene.patblend
         
-        layout.prop(prop, "E_samp")
-        layout.prop(prop, "E_viewSamp")
+        row = layout.row(align = True)
+        row.prop(prop, "E_samp")
+        row.prop(prop, "E_viewSamp")
         layout.prop(prop, "E_ao")
         layout.prop(prop, "E_blm")
         layout.prop(prop, "E_ssr")
         layout.prop(prop, "E_mb")
         layout.prop(prop, "E_trnsWrld")
         layout.separator()
-        layout.prop(prop, "E_custOutX")
-        layout.prop(prop, "E_custOutY")
+        row = layout.row(align = True)
+        row.prop(prop, "E_custOutX")
+        row.prop(prop, "E_custOutY")
         layout.prop(prop, "E_animEnd")
         layout.prop(prop, "E_fps")
         layout.separator()
-        layout.prop(prop, "E_backCol")
-        layout.prop(prop, "E_backStr")
-        layout.operator("wm.patblend_eevee_adv_setup")
+        row = layout.row(align = True)
+        row.prop(prop, "E_backCol")
+        row.prop(prop, "E_backStr")
+        row = layout.row()
+        row.scale_y = 1.5
+        row.operator("wm.patblend_eevee_adv_setup")
         layout.separator()
         
 class PATBLEND_PT_RenderWorkbenchPanel(Panel, bpy.types.Panel):
@@ -855,14 +877,18 @@ class PATBLEND_PT_RenderWorkbenchPanel(Panel, bpy.types.Panel):
         layout.prop(prop, "W_samp")
         layout.prop(prop, "W_trnsWrld")
         layout.separator()
-        layout.prop(prop, "W_custOutX")
-        layout.prop(prop, "W_custOutY")
+        row = layout.row(align = True)
+        row.prop(prop, "W_custOutX")
+        row.prop(prop, "W_custOutY")
         layout.prop(prop, "W_animEnd")
         layout.prop(prop, "W_fps")
         layout.separator()
-        layout.prop(prop, "W_backCol")
-        layout.prop(prop, "W_backStr")
-        layout.operator("wm.patblend_workbench_setup")
+        row = layout.row(align = True)
+        row.prop(prop, "W_backCol")
+        row.prop(prop, "W_backStr")
+        row = layout.row()
+        row.scale_y = 1.5
+        row.operator("wm.patblend_workbench_setup")
         layout.separator()
         
 class PATBLEND_PT_RenderCyclesSimpPanel(Panel, bpy.types.Panel):
@@ -880,7 +906,10 @@ class PATBLEND_PT_RenderCyclesSimpPanel(Panel, bpy.types.Panel):
         layout.separator()
         layout.prop(prop, "C_outSize")
         layout.prop(prop, "C_animEnd")
-        layout.operator("wm.patblend_cycles_simp_setup")
+        layout.prop(prop, "C_fps")
+        row = layout.row()
+        row.scale_y = 1.5
+        row.operator("wm.patblend_cycles_simp_setup")
         layout.separator()
         
 class PATBLEND_PT_RenderCyclesAdvPanel(Panel, bpy.types.Panel):
@@ -893,22 +922,27 @@ class PATBLEND_PT_RenderCyclesAdvPanel(Panel, bpy.types.Panel):
         prop = scene.patblend
         
         layout.prop(prop, "C_device")
+        row = layout.row(align = True)
         layout.prop(prop, "C_sampType")
-        layout.prop(prop, "C_samp")
-        layout.prop(prop, "C_viewSamp")
+        row.prop(prop, "C_samp")
+        row.prop(prop, "C_viewSamp")
         layout.prop(prop, "C_bounces")
         layout.prop(prop, "C_caustics")
         layout.prop(prop, "C_mb")
         layout.prop(prop, "C_trnsWrld")
         layout.separator()
-        layout.prop(prop, "C_custOutX")
-        layout.prop(prop, "C_custOutY")
+        row = layout.row(align = True)
+        row.prop(prop, "C_custOutX")
+        row.prop(prop, "C_custOutY")
         layout.prop(prop, "C_animEnd")
         layout.prop(prop, "C_fps")
         layout.separator()
-        layout.prop(prop, "C_backCol")
-        layout.prop(prop, "C_backStr")
-        layout.operator("wm.patblend_cycles_adv_setup")
+        row = layout.row(align = True)
+        row.prop(prop, "C_backCol")
+        row.prop(prop, "C_backStr")
+        row = layout.row()
+        row.scale_y = 1.5
+        row.operator("wm.patblend_cycles_adv_setup")
         layout.separator()
         
 
@@ -1017,8 +1051,9 @@ class PATBLEND_PT_UnitLengthPanel(Panel, bpy.types.Panel):
 
         layout.prop(prop, "inputType")
         layout.prop(prop, "outputType")
-        layout.prop(prop, "input")
-        layout.prop(prop, "precision")
+        row = layout.row(align=True)
+        row.prop(prop, "input")
+        row.prop(prop, "precision")
         
         type1 = prop.inputType
         type2 = prop.outputType
@@ -1058,7 +1093,9 @@ class PATBLEND_PT_UnitTimePanel(Panel, bpy.types.Panel):
         layout.prop(prop, "time_convert_type")
         
         if prop.time_convert_type == '0':
-            layout.prop(prop, "time_num_time")
+            row = layout.row(align = True)
+            row.prop(prop, "time_num_time")
+            row.prop(prop, "time_mult")
             sec = prop.time_num_time
 
             hour = math.floor(sec / 3600)        # Find Hours
