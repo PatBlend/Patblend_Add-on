@@ -697,7 +697,7 @@ class PATBLEND_OT_PatBlendSite(Operator):
         return {'FINISHED'}
 
 class PATBLEND_OT_PatBlendDownload(Operator):
-    bl_label = "Download Latest Version .zip File"
+    bl_label = "Download Latest Version"
     bl_idname = "wm.patblend_download"
 
     def execute(self, context):
