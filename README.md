@@ -30,6 +30,7 @@ All the options can be found in <i>3D View >> Sidebar ('n') >> PatBlend</i>
   <li>Open a new Blender file</li>
   <li>Press "n" to open the 3D Viewport Sidebar.</li>
   <li>Select the panel titled "PatBlend" and open the section named "Unit Converter"</li>
+  <li>Open a subpanel of your choice.</li>
   <li>Adjust the settings, and the text at the bottom will update in realtime.</li>
 </ol>
 
