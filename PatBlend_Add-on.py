@@ -731,7 +731,9 @@ class PATBLEND_OT_DownloadAsk(bpy.types.Operator):
         col.scale_y = 1
 
     def execute(self, context):
+        bpy.ops.wm.url_open(url="https://github.com/PatBlend/Patblend_Add-on")
         bpy.ops.wm.url_open(url="https://github.com/PatBlend/Patblend_Add-on/archive/master.zip")
+        
         return {'FINISHED'}
     
 
