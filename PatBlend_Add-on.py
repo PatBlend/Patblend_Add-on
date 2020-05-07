@@ -860,9 +860,6 @@ class PATBLEND_PT_PatBlendQuickOptions(Panel, bpy.types.Panel):
         row.scale_y = 2
         row.operator("wm.patblend_disable_prompt")
         row.operator("wm.patblend_uninstall_prompt")
-        row = layout.row()
-        row.scale_y = 4
-        row.operator("wm.patblend_download")
 
 class PATBLEND_PT_PatBlendLinks(Panel, bpy.types.Panel):
     bl_parent_id = "PATBLEND_PT_PatBlendOptionsPanel"
@@ -877,6 +874,9 @@ class PATBLEND_PT_PatBlendLinks(Panel, bpy.types.Panel):
         row.scale_y = 1.2
         row.operator("wm.patblend_github")
         row.operator("wm.patblend_site")
+        row = layout.row()
+        row.scale_y = 4
+        row.operator("wm.patblend_download")
 
 ########## Render Setup Panels ##########
 class PATBLEND_PT_RenderMainPanel(Panel, bpy.types.Panel):
