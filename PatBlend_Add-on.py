@@ -1,9 +1,9 @@
 ########## Metadata ##########
 bl_info = {
-    "name":        "PatBlend Add-ons",
+    "name":        "PatBlend Add-on 1.0.1",
     "description": "A compilation of all Add-ons made by PatBlend",
     "author":      "Patrick Huang, PatBlend <https://sites.google.com/view/patblend>",
-    "version":     (1, 0, 0),
+    "version":     (1, 0, 1),
     "blender":     (2, 80, 0),
     "location":    "3D View >> Sidebar >> PatBlend",
     "warning":     "",
