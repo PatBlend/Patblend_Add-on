@@ -13,7 +13,7 @@ bl_info = {
     
 
 ########## Library Import ##########
-import bpy, math
+import bpy, math, time
 from bpy.props import (StringProperty,
                        BoolProperty,
                        IntProperty,
@@ -70,10 +70,10 @@ class PatBlendAddonProperties(PropertyGroup):
         name="Output Size", 
         description="Pixel resolution of the final render.",
         items=[
-            ('2', "1080×1920px", ""), 
-            ('1', "720×1280px", ""), 
-            ('0', "540×960px", ""), 
-            ('3', "2160×3840px", ""),])
+            ('2', "1080×1920px", "Standard HD"), 
+            ('1', "720×1280px", "HD"), 
+            ('0', "540×960px", "Low Resolution"), 
+            ('3', "2160×3840px", "High Resolution"),])
             
     E_custOutX: IntProperty(
         name="Output Size X",
@@ -114,13 +114,13 @@ class PatBlendAddonProperties(PropertyGroup):
         name="Sampling Type", 
         description="How Workbench samples the scene.",
         items=[
-            ('0', "No Anti-Aliasing", ""), 
-            ('1', "Anti-Aliasing", ""), 
-            ('2', "5 Samples", ""), 
-            ('3', "8 Samples", ""),
-            ('4', "11 Samples", ""),
-            ('5', "16 Samples", ""),
-            ('6', "32 Samples", ""),])
+            ('0', "No Anti-Aliasing", "Bare Image"), 
+            ('1', "Anti-Aliasing", "Makes edges smoother"), 
+            ('2', "5 Samples", "5 Samples"), 
+            ('3', "8 Samples", "8 Samples"),
+            ('4', "11 Samples", "11 Samples"),
+            ('5', "16 Samples", "16 Samples"),
+            ('6', "32 Samples", "32 Samples"),])
             
     W_trnsWrld: BoolProperty(
         name="Transparent World",
@@ -166,8 +166,8 @@ class PatBlendAddonProperties(PropertyGroup):
         name="Render Device", 
         description="What device to render with", 
         items=[
-            ('1', "GPU Compute", ""), 
-            ('0', "CPU", ""),])
+            ('1', "GPU Compute", "Uses GPU, tends to be faster"), 
+            ('0', "CPU", "Uses CPU, tends to be slower"),])
             
     C_samp: IntProperty(
         name="Samples",
@@ -211,10 +211,10 @@ class PatBlendAddonProperties(PropertyGroup):
         name="Output Size", 
         description="Pixel resolution of the final render.",
         items=[
-            ('2', "1080×1920px", ""), 
-            ('1', "720×1280px", ""), 
-            ('0', "540×960px", ""), 
-            ('3', "2160×3840px", ""),])
+            ('2', "1080×1920px", "Standard HD"), 
+            ('1', "720×1280px", "HD"), 
+            ('0', "540×960px", "Low Resolution"), 
+            ('3', "2160×3840px", "High Resolution"),])
             
     C_custOutX: IntProperty(
         name="Output Size X",
@@ -300,84 +300,23 @@ class PatBlendAddonProperties(PropertyGroup):
         description = "Shows important information in the system console as the add-on functions.",
         default = True)
         
+    time_convert_type: EnumProperty(
+        name = "Conversion Type",
+        description = "Type of action that the computer performs",
+        items = [
+            ('0', "Seconds to Standard", "From a float number to hh:mm:ss.ss"),
+            ('1', "Standard to Seconds", "From hh:mm:ss.ss to a float number")])
+
+    time_num_time: FloatProperty(
+        name = "Seconds",
+        description = "Number of seconds to convert",
+        default = 125, min = 0)
+
+    time_str_time: StringProperty(
+        name = "Time",
+        description = "Enter time exactly in the fomat hh:mm:ss.ss"
+    )
         
-        
-
-##################################################################
-# Other Functions
-##################################################################
-
-########## Unit Converter ##########
-def GetUnitName(unit):
-    unit = int(unit)
-    if unit == 0:
-        value = "Milimeter"
-    elif unit == 1:
-        value = "Centimeter"
-    elif unit == 2:
-        value = "Meter"
-    elif unit == 3:
-        value = "Kilometer"
-    elif unit == 4:
-        value = "Inch"
-    elif unit == 5:
-        value = "Foot"
-    elif unit == 6:
-        value = "Yard"
-    elif unit == 7:
-        value ="Mile"
-    return value
-
-def ToMeter(unit, value):
-    unit = int(unit)
-    if unit == 0:
-        value /= 1000
-    elif unit == 1:
-        value /= 100
-    elif unit == 2:
-        value = value
-    elif unit == 3:
-        value *= 1000
-    elif unit == 4:
-        value *= 2.54
-        value /= 100
-    elif unit == 5:
-        value *= 12
-        value *= 2.54
-        value /= 100
-    elif unit == 6:
-        value *= 36
-        value *= 2.54
-        value /= 100
-    elif unit == 7:
-        value *= 1600
-    return value
-
-def FromMeter(unit, value):
-    unit = int(unit)
-    if unit == 0:
-        value *= 1000
-    elif unit == 1:
-        value *= 100
-    elif unit == 2:
-        value = value
-    elif unit == 3:
-        value /= 1000
-    elif unit == 4:
-        value /= 2.54
-        value *= 100
-    elif unit == 5:
-        value /= 12
-        value /= 2.54
-        value *= 100
-    elif unit == 6:
-        value /= 36
-        value /= 2.54
-        value *= 100
-    elif unit == 7:
-        value /= 1600
-    return value
-
 
 
 ##############################################################
@@ -696,9 +635,9 @@ class WM_OT_SearchExecute(Operator):
     
     
 ########## Settings ##########
-class WM_OT_AddonUpdate(Operator):
-    bl_label = "Download latest version"
-    bl_idname = "wm.patblend_download_addon"
+class WM_OT_GitHub(Operator):
+    bl_label = "PatBlend GitHub"
+    bl_idname = "wm.patblend_github"
     
     def execute(self, context):
         scene = context.scene
@@ -710,7 +649,7 @@ class WM_OT_AddonUpdate(Operator):
             print("########## PatBlend Add-on logging start")
             print("Request recieved to download latest version of add-on, working.")
         
-        bpy.ops.wm.url_open(url="https://drive.google.com/open?id=1EQd16cotHF_j7FOSmEMaYHfoJJgCYE9l")
+        bpy.ops.wm.url_open(url="https://github.com/PatBlend/Patblend_Add-on")
         
         if show:
             print("Done!")
@@ -718,8 +657,89 @@ class WM_OT_AddonUpdate(Operator):
             print()
         
         return {'FINISHED'}
+
+class WM_OT_PatBlendSite(Operator):
+    bl_label = "PatBlend Site"
+    bl_idname = "wm.patblend_site"
     
-#class WM_OT_
+    def execute(self, context):
+        scene = context.scene
+        prop = scene.patblend
+        show = prop.console
+        
+        if show:
+            print()
+            print("########## PatBlend Add-on logging start")
+            print("Request recieved to download latest version of add-on, working.")
+        
+        bpy.ops.wm.url_open(url="https://sites.google.com/view/patblend")
+        
+        if show:
+            print("Done!")
+            print("########## PatBlend Add-on logging end")
+            print()
+        
+        return {'FINISHED'}
+
+    
+
+########## Uninstallation ##########
+# Prompt
+class PATBLEND_OT_Uninstall_Prompt(Operator):
+    bl_label = "Uninstall PatBlend Add-on"
+    bl_idname = "wm.patblend_uninstall_prompt"
+    
+    def execute(self, context):
+        scene = context.scene
+        prop = scene.patblend
+        
+        bpy.ops.wm.patblend_uninstall_warning('INVOKE_DEFAULT')
+        return {'FINISHED'}
+
+# Warning 1
+class PATBLEND_OT_Uninstall_Warning(bpy.types.Operator):
+    bl_label = "Are you sure?"
+    bl_idname = "wm.patblend_uninstall_warning"
+    
+    def invoke(self, context, event):
+        return context.window_manager.invoke_props_dialog(self)
+    
+    def draw(self, context):
+        col = self.layout.column()
+        col.scale_y = 1
+        col.label(text = "The add-on will be gone until you install it again.")
+        col.label(text = "Note: Blender may crash when uninstalling.")
+    
+    def execute(self, context):
+        bpy.ops.wm.patblend_uninstall_warning_2('INVOKE_DEFAULT')
+        return {'FINISHED'}
+    
+# Warning 2
+class PATBLEND_OT_Uninstall_Warning_2(bpy.types.Operator):
+    bl_label = "Are you very sure?"
+    bl_idname = "wm.patblend_uninstall_warning_2"
+    
+    def invoke(self, context, event):
+        return context.window_manager.invoke_props_dialog(self)
+    
+    def draw(self, context):
+        col = self.layout.column()
+        col.scale_y = 1
+        col.label(text = "This action cannot be undone.")
+    
+    def execute(self, context):
+        bpy.ops.wm.patblend_uninstall()
+        return {'FINISHED'}
+        
+# Uninstall
+class PATBLEND_OT_Uninstall(bpy.types.Operator):
+    bl_idname = "wm.patblend_uninstall"
+    bl_label = "Uninstalling"
+    
+    def execute(self, context):
+        time.sleep(0.1)
+        bpy.ops.preferences.addon_remove(module = "PatBlend_Add-on")
+        return {'FINISHED'}
 
 
 ##############################################################
@@ -742,10 +762,31 @@ class PATBLEND_PT_PatBlendOptionsPanel(Panel, bpy.types.Panel):
         layout = self.layout
         scene = context.scene
         prop = scene.patblend
-        
+
+class PATBLEND_PT_PatBlendQuickOptions(Panel, bpy.types.Panel):
+    bl_parent_id = "PATBLEND_PT_PatBlendOptionsPanel"
+    bl_label = "Quick Settings"
+
+    def draw(self, context):
+        layout = self.layout
+        scene = context.scene
+        prop = scene.patblend
+
         layout.prop(prop, "console")
-        #layout.prop(prop, "enabled")
-        layout.operator("wm.patblend_download_addon")
+        layout.operator("wm.patblend_uninstall_prompt")
+
+class PATBLEND_PT_PatBlendLinks(Panel, bpy.types.Panel):
+    bl_parent_id = "PATBLEND_PT_PatBlendOptionsPanel"
+    bl_label = "PatBlend Links"
+
+    def draw(self, context):
+        layout = self.layout
+        scene = context.scene
+        prop = scene.patblend
+
+        row = layout.row()
+        row.operator("wm.patblend_github")
+        row.operator("wm.patblend_site")
 
 ########## Render Setup Panels ##########
 class PATBLEND_PT_RenderMainPanel(Panel, bpy.types.Panel):
@@ -890,13 +931,94 @@ class PATBLEND_PT_SearchMainPanel(Panel, bpy.types.Panel):
 class PATBLEND_PT_UnitMainPanel(Panel, bpy.types.Panel):
     bl_idname = "PATBLEND_PT_UnitMainPanel"
     bl_label = "Unit Converter"
-    
+
     def draw(self, context):
         layout = self.layout
-        layout.label(text = "Convert between different units.")
         scene = context.scene
         prop = scene.patblend
         
+        layout.label(text="Convert between different units.")
+
+class PATBLEND_PT_UnitLengthPanel(Panel, bpy.types.Panel):
+    bl_parent_id = "PATBLEND_PT_UnitMainPanel"
+    bl_label = "Units of Length"
+    
+    def draw(self, context):
+        layout = self.layout
+        layout.label(text = "Convert between length units.")
+        scene = context.scene
+        prop = scene.patblend
+        
+        def GetUnitName(unit):
+            unit = int(unit)
+            if unit == 0:
+                value = "Milimeter"
+            elif unit == 1:
+                value = "Centimeter"
+            elif unit == 2:
+                value = "Meter"
+            elif unit == 3:
+                value = "Kilometer"
+            elif unit == 4:
+                value = "Inch"
+            elif unit == 5:
+                value = "Foot"
+            elif unit == 6:
+                value = "Yard"
+            elif unit == 7:
+                value ="Mile"
+            return value
+
+        def ToMeter(unit, value):
+            unit = int(unit)
+            if unit == 0:
+                value /= 1000
+            elif unit == 1:
+                value /= 100
+            elif unit == 2:
+                value = value
+            elif unit == 3:
+                value *= 1000
+            elif unit == 4:
+                value *= 2.54
+                value /= 100
+            elif unit == 5:
+                value *= 12
+                value *= 2.54
+                value /= 100
+            elif unit == 6:
+                value *= 36
+                value *= 2.54
+                value /= 100
+            elif unit == 7:
+                value *= 1600
+            return value
+
+        def FromMeter(unit, value):
+            unit = int(unit)
+            if unit == 0:
+                value *= 1000
+            elif unit == 1:
+                value *= 100
+            elif unit == 2:
+                value = value
+            elif unit == 3:
+                value /= 1000
+            elif unit == 4:
+                value /= 2.54
+                value *= 100
+            elif unit == 5:
+                value /= 12
+                value /= 2.54
+                value *= 100
+            elif unit == 6:
+                value /= 36
+                value /= 2.54
+                value *= 100
+            elif unit == 7:
+                value /= 1600
+            return value
+
         layout.prop(prop, "inputType")
         layout.prop(prop, "outputType")
         layout.prop(prop, "input")
@@ -928,6 +1050,63 @@ class PATBLEND_PT_UnitMainPanel(Panel, bpy.types.Panel):
         layout.label(text = text2)
         layout.separator()
         
+class PATBLEND_PT_UnitTimePanel(Panel, bpy.types.Panel):
+    bl_parent_id = "PATBLEND_PT_UnitMainPanel"
+    bl_label = "Units of Time"
+    
+    def draw(self, context):
+        layout = self.layout
+        layout.label(text = "Convert between time units.")
+        scene = context.scene
+        prop = scene.patblend
+
+        layout.prop(prop, "time_convert_type")
+        
+        if prop.time_convert_type == '0':
+            layout.prop(prop, "time_num_time")
+            sec = prop.time_num_time
+
+            hour = math.floor(sec / 3600)        # Find Hours
+            sec -= hour * 3600                   # Subtract from seconds
+
+            min = math.floor(sec / 60)           # Find minutes
+            sec -= min * 60                      # Subtract from minutes
+
+            if hour <= 9:                        # Grammar Issues
+                hour = "0" + str(hour)
+            else:
+                hour = str(hour)
+            if min <= 9:
+                min = "0" + str(min)
+            else:
+                min = str(min)
+            if sec <= 9:
+                sec = "0" + str(round(sec, 2))
+            else:
+                sec = str(round(sec, 2))
+
+            if prop.time_num_time == 1:          # Text 1: 56 seconds is
+                text1 = str(round(prop.time_num_time, 2)) + " second is"
+            else:                                
+                text1 = str(round(prop.time_num_time, 2)) + " seconds is"
+
+            text2 = hour + " : " + min + " : " + sec      # Text 2 : 46 : 24 : 75.25
+
+            layout.label(text = text1)
+            layout.label(text = text2)
+
+        elif prop.time_convert_type == '1':
+            '''
+            layout.prop(prop, time_str_time)
+            time = prop.time_str_time
+            numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+            colons = []
+            for i in len(time):
+                if time[i] == ":":
+                    colons.append(i)
+            '''
+            layout.label(text = "In development")
+            
         
         
 ##############################################################
@@ -941,9 +1120,16 @@ classes = (PatBlendAddonProperties,
                WM_OT_WExecute,
                WM_OT_CSimpExecute,
                WM_OT_CAdvExecute,
-               WM_OT_AddonUpdate,
+               WM_OT_GitHub,
+               WM_OT_PatBlendSite,
+               PATBLEND_OT_Uninstall_Prompt,
+               PATBLEND_OT_Uninstall_Warning,
+               PATBLEND_OT_Uninstall_Warning_2,
+               PATBLEND_OT_Uninstall,
                
                PATBLEND_PT_PatBlendOptionsPanel,
+               PATBLEND_PT_PatBlendQuickOptions,
+               PATBLEND_PT_PatBlendLinks,
                
                PATBLEND_PT_RenderMainPanel,
                PATBLEND_PT_RenderEeveeSimpPanel,
@@ -955,7 +1141,9 @@ classes = (PatBlendAddonProperties,
                WM_OT_SearchExecute,
                PATBLEND_PT_SearchMainPanel,
                
-               PATBLEND_PT_UnitMainPanel)
+               PATBLEND_PT_UnitMainPanel,
+               PATBLEND_PT_UnitLengthPanel,
+               PATBLEND_PT_UnitTimePanel)
            
 def register():
     from bpy.utils import register_class
