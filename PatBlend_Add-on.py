@@ -795,7 +795,6 @@ class PATBLEND_PT_RenderMainPanel(Panel, bpy.types.Panel):
     
     def draw(self, context):
         layout = self.layout
-        layout.label(text = "Setup the render engines.")
         
 class PATBLEND_PT_RenderEeveeSimpPanel(Panel, bpy.types.Panel):
     bl_parent_id = "PATBLEND_PT_RenderMainPanel"
@@ -936,8 +935,6 @@ class PATBLEND_PT_UnitMainPanel(Panel, bpy.types.Panel):
         layout = self.layout
         scene = context.scene
         prop = scene.patblend
-        
-        layout.label(text="Convert between different units.")
 
 class PATBLEND_PT_UnitLengthPanel(Panel, bpy.types.Panel):
     bl_parent_id = "PATBLEND_PT_UnitMainPanel"
@@ -945,7 +942,6 @@ class PATBLEND_PT_UnitLengthPanel(Panel, bpy.types.Panel):
     
     def draw(self, context):
         layout = self.layout
-        layout.label(text = "Convert between length units.")
         scene = context.scene
         prop = scene.patblend
         
@@ -1056,7 +1052,6 @@ class PATBLEND_PT_UnitTimePanel(Panel, bpy.types.Panel):
     
     def draw(self, context):
         layout = self.layout
-        layout.label(text = "Convert between time units.")
         scene = context.scene
         prop = scene.patblend
 
