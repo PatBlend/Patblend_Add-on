@@ -42,7 +42,8 @@ All the options can be found in <i>3D View >> Sidebar ('n') >> PatBlend</i>
   <li>Press the Search button.</li>
 </ol>
 
-<b>A brief description of each sub-add-on:</b>\n
+<b>A brief description of each sub-add-on:</b>
+
 <b>Render Setup:</b>
 This add-on has a user friendly interface. It quickly sets up the render engine of your choice. Right now, there are five panels: Eevee Simple, Eevee Advanced, Workbench, Cycles Simple, and Cycles Advanced. There are simple settings such as Samples, Output size, FPS, and World Color that helps an artist focus on what matters.
 
