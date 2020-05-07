@@ -340,7 +340,7 @@ class PatBlendAddonProperties(PropertyGroup):
 
 ########## Render Setup ##########
 # Eevee Simple Setup
-class WM_OT_ESimpExecute(Operator):
+class PATBLEND_OT_ESimpExecute(Operator):
     bl_label = "Setup Eevee"
     bl_idname = "wm.patblend_eevee_simp_setup"
     
@@ -393,7 +393,7 @@ class WM_OT_ESimpExecute(Operator):
         return {'FINISHED'}
 
 # Eevee Adv Setup
-class WM_OT_EAdvExecute(Operator):
+class PATBLEND_OT_EAdvExecute(Operator):
     bl_label = "Setup Eevee"
     bl_idname = "wm.patblend_eevee_adv_setup"
     
@@ -437,7 +437,7 @@ class WM_OT_EAdvExecute(Operator):
 
 
 # Workbench Setup
-class WM_OT_WExecute(Operator):
+class PATBLEND_OT_WExecute(Operator):
     bl_label = "Setup Workbench"
     bl_idname = "wm.patblend_workbench_setup"
 
@@ -484,7 +484,7 @@ class WM_OT_WExecute(Operator):
         return {'FINISHED'}
 
 # Cycles Simp Setup
-class WM_OT_CSimpExecute(Operator):
+class PATBLEND_OT_CSimpExecute(Operator):
     bl_label = "Setup Cycles"
     bl_idname = "wm.patblend_cycles_simp_setup"
     
@@ -550,7 +550,7 @@ class WM_OT_CSimpExecute(Operator):
         return {'FINISHED'}
         
 # Cycles Adv Setup
-class WM_OT_CAdvExecute(Operator):
+class PATBLEND_OT_CAdvExecute(Operator):
     bl_label = "Setup Cycles"
     bl_idname = "wm.patblend_cycles_adv_setup"
     
@@ -614,7 +614,7 @@ class WM_OT_CAdvExecute(Operator):
         
 
 ########## Search ##########
-class WM_OT_SearchExecute(Operator):
+class PATBLEND_OT_SearchExecute(Operator):
     bl_label = "Search"
     bl_idname = "wm.patblend_search"
 
@@ -650,7 +650,7 @@ class WM_OT_SearchExecute(Operator):
     
     
 ########## Settings ##########
-class WM_OT_GitHub(Operator):
+class PATBLEND_OT_GitHub(Operator):
     bl_label = "GitHub"
     bl_idname = "wm.patblend_github"
     
@@ -673,7 +673,7 @@ class WM_OT_GitHub(Operator):
         
         return {'FINISHED'}
 
-class WM_OT_PatBlendSite(Operator):
+class PATBLEND_OT_PatBlendSite(Operator):
     bl_label = "Website"
     bl_idname = "wm.patblend_site"
     
@@ -696,7 +696,7 @@ class WM_OT_PatBlendSite(Operator):
         
         return {'FINISHED'}
 
-class WM_OT_PatBlendDownload(Operator):
+class PATBLEND_OT_PatBlendDownload(Operator):
     bl_label = "Direct Download"
     bl_idname = "wm.patblend_download"
 
@@ -1253,39 +1253,39 @@ class PATBLEND_PT_UnitTimePanel(Panel, bpy.types.Panel):
 
 
 classes = (PatBlendAddonProperties,
-               WM_OT_ESimpExecute,
-               WM_OT_EAdvExecute,
-               WM_OT_WExecute,
-               WM_OT_CSimpExecute,
-               WM_OT_CAdvExecute,
-               WM_OT_GitHub,
-               WM_OT_PatBlendSite,
-               WM_OT_PatBlendDownload,
-               PATBLEND_OT_DownloadAsk,
-               PATBLEND_OT_Uninstall_Prompt,
-               PATBLEND_OT_Uninstall_Warning,
-               PATBLEND_OT_Uninstall_Warning_2,
+           PATBLEND_OT_ESimpExecute,
+           PATBLEND_OT_EAdvExecute,
+           PATBLEND_OT_WExecute,
+           PATBLEND_OT_CSimpExecute,
+           PATBLEND_OT_CAdvExecute,
+           PATBLEND_OT_GitHub,
+           PATBLEND_OT_PatBlendSite,
+           PATBLEND_OT_PatBlendDownload,
+           PATBLEND_OT_DownloadAsk,
+           PATBLEND_OT_Uninstall_Prompt,
+           PATBLEND_OT_Uninstall_Warning,
+           PATBLEND_OT_Uninstall_Warning_2,
 
-               PATBLEND_OT_DisablePrompt,
-               PATBLEND_OT_Disable,
-               
-               PATBLEND_PT_PatBlendOptionsPanel,
-               PATBLEND_PT_PatBlendQuickOptions,
-               PATBLEND_PT_PatBlendLinks,
-               
-               PATBLEND_PT_RenderMainPanel,
-               PATBLEND_PT_RenderEeveeSimpPanel,
-               PATBLEND_PT_RenderEeveeAdvPanel,
-               PATBLEND_PT_RenderWorkbenchPanel,
-               PATBLEND_PT_RenderCyclesSimpPanel,
-               PATBLEND_PT_RenderCyclesAdvPanel,
-               
-               WM_OT_SearchExecute,
-               PATBLEND_PT_SearchMainPanel,
-               
-               PATBLEND_PT_UnitMainPanel,
-               PATBLEND_PT_UnitLengthPanel,
-               PATBLEND_PT_UnitTimePanel)
+           PATBLEND_OT_DisablePrompt,
+           PATBLEND_OT_Disable,
+           
+           PATBLEND_PT_PatBlendOptionsPanel,
+           PATBLEND_PT_PatBlendQuickOptions,
+           PATBLEND_PT_PatBlendLinks,
+           
+           PATBLEND_PT_RenderMainPanel,
+           PATBLEND_PT_RenderEeveeSimpPanel,
+           PATBLEND_PT_RenderEeveeAdvPanel,
+           PATBLEND_PT_RenderWorkbenchPanel,
+           PATBLEND_PT_RenderCyclesSimpPanel,
+           PATBLEND_PT_RenderCyclesAdvPanel,
+           
+           PATBLEND_OT_SearchExecute,
+           PATBLEND_PT_SearchMainPanel,
+           
+           PATBLEND_PT_UnitMainPanel,
+           PATBLEND_PT_UnitLengthPanel,
+           PATBLEND_PT_UnitTimePanel)
            
 def register():
     from bpy.utils import register_class
