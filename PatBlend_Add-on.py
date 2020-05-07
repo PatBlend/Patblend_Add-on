@@ -346,8 +346,8 @@ class WM_OT_ESimpExecute(Operator):
         
         if show:
             print()
-            print("########## PatBlend Add-on logging start")
-            print("Request recieved to setup Eevee, working.")
+            print("------------------- PatBlend Logging Start -------------------")
+            print("Setting up Eevee...")
             
         bpy.context.scene.render.engine = 'BLENDER_EEVEE'           # Use Eevee
         bpy.context.scene.eevee.taa_render_samples = prop.E_samp    # Render Samples to User Input
@@ -381,8 +381,8 @@ class WM_OT_ESimpExecute(Operator):
         bpy.data.worlds["World"].node_tree.nodes["Background"].inputs[1].default_value = prop.E_backStr
         
         if show:
-            print("Done!")
-            print("########## PatBlend Add-on logging end")
+            print("Eevee has been successfully setup.")
+            print("------------------- PatBlend Logging End -------------------")
             print()
         
         return {'FINISHED'}
@@ -399,8 +399,8 @@ class WM_OT_EAdvExecute(Operator):
         
         if show:
             print()
-            print("########## PatBlend Add-on logging start")
-            print("Request recieved to setup Eevee, working.")
+            print("------------------- PatBlend Logging Start -------------------")
+            print("Setting up Eevee...")
         
         bpy.context.scene.render.engine = 'BLENDER_EEVEE'           # Use Eevee
         bpy.context.scene.eevee.taa_render_samples = prop.E_samp    # Render Samples to User Input
@@ -424,8 +424,8 @@ class WM_OT_EAdvExecute(Operator):
         bpy.data.worlds["World"].node_tree.nodes["Background"].inputs[1].default_value = prop.E_backStr
         
         if show:
-            print("Done!")
-            print("########## PatBlend Add-on logging end")
+            print("Eevee has been successfully setup.")
+            print("------------------- PatBlend Logging End -------------------")
             print()
         
         return {'FINISHED'}
@@ -443,8 +443,8 @@ class WM_OT_WExecute(Operator):
         
         if show:
             print()
-            print("########## PatBlend Add-on logging start")
-            print("Request recieved to setup Workbench, working.")
+            print("------------------- PatBlend Logging Start -------------------")
+            print("Setting up Workbench...")
         
         bpy.context.scene.render.engine = 'BLENDER_WORKBENCH'       # Use Workbench
         if prop.W_samp  == 0:                                        # Render Samples
@@ -472,8 +472,8 @@ class WM_OT_WExecute(Operator):
         bpy.data.worlds["World"].node_tree.nodes["Background"].inputs[1].default_value = prop.W_backStr
         
         if show:
-            print("Done!")
-            print("########## PatBlend Add-on logging end")
+            print("Workbench has been successfully setup.")
+            print("------------------- PatBlend Logging End -------------------")
             print()
         
         return {'FINISHED'}
@@ -490,8 +490,8 @@ class WM_OT_CSimpExecute(Operator):
         
         if show:
             print()
-            print("########## PatBlend Add-on logging start")
-            print("Request recieved to setup Cycles, working.")
+            print("------------------- PatBlend Logging Start -------------------")
+            print("Setting up Cycles...")
         
         bpy.context.scene.render.engine = 'CYCLES'
         if int(prop.C_device) == 0:
@@ -538,8 +538,8 @@ class WM_OT_CSimpExecute(Operator):
         bpy.data.worlds["World"].node_tree.nodes["Background"].inputs[0].default_value = (0, 0, 0, 1)
         
         if show:
-            print("Done!")
-            print("########## PatBlend Add-on logging end")
+            print("Cycles has been successfully setup.")
+            print("------------------- PatBlend Logging End -------------------")
             print()
         
         return {'FINISHED'}
@@ -556,8 +556,8 @@ class WM_OT_CAdvExecute(Operator):
         
         if show:
             print()
-            print("########## PatBlend Add-on logging start")
-            print("Request recieved to setup Cycles, working.")
+            print("------------------- PatBlend Logging Start -------------------")
+            print("Setting up Cycles...")
         
         bpy.context.scene.render.engine = 'CYCLES'                     # Use Cycles
         if prop.C_device == '0':                                         # GPU or CPU
@@ -601,8 +601,8 @@ class WM_OT_CAdvExecute(Operator):
         bpy.data.worlds["World"].node_tree.nodes["Background"].inputs[1].default_value = prop.C_backStr
         
         if show:
-            print("Done!")
-            print("########## PatBlend Add-on logging end")
+            print("Cycles has been successfully setup.")
+            print("------------------- PatBlend Logging End -------------------")
             print()
         
         return {'FINISHED'}
@@ -621,8 +621,8 @@ class WM_OT_SearchExecute(Operator):
         
         if show:
             print()
-            print("########## PatBlend Add-on logging start")
-            print("Request recieved to search, working.")
+            print("------------------- PatBlend Logging Start -------------------")
+            print("Searching...")
         
         if url == "":
             return {'FINISHED'}
@@ -637,8 +637,8 @@ class WM_OT_SearchExecute(Operator):
             bpy.ops.wm.url_open(url=realUrl)
         
         if show:
-            print("Done!")
-            print("########## PatBlend Add-on logging end")
+            print("Successfully searched.")
+            print("------------------- PatBlend Logging End -------------------")
             print()
         
         return {'FINISHED'}
@@ -656,14 +656,14 @@ class WM_OT_GitHub(Operator):
         
         if show:
             print()
-            print("########## PatBlend Add-on logging start")
-            print("Request recieved to download latest version of add-on, working.")
+            print("------------------- PatBlend Logging Start -------------------")
+            print("Redirecting to https://github.com/PatBlend/Patblend_Add-on")
         
         bpy.ops.wm.url_open(url="https://github.com/PatBlend/Patblend_Add-on")
         
         if show:
-            print("Done!")
-            print("########## PatBlend Add-on logging end")
+            print("Redirection Successful")
+            print("------------------- PatBlend Logging End -------------------")
             print()
         
         return {'FINISHED'}
@@ -679,14 +679,14 @@ class WM_OT_PatBlendSite(Operator):
         
         if show:
             print()
-            print("########## PatBlend Add-on logging start")
-            print("Request recieved to download latest version of add-on, working.")
+            print("------------------- PatBlend Logging Start -------------------")
+            print("Redirecting to https://sites.google.com/view/patblend")
         
         bpy.ops.wm.url_open(url="https://sites.google.com/view/patblend")
         
         if show:
-            print("Done!")
-            print("########## PatBlend Add-on logging end")
+            print("Redirection Successful")
+            print("------------------- PatBlend Logging End -------------------")
             print()
         
         return {'FINISHED'}
@@ -702,7 +702,15 @@ class PATBLEND_OT_Uninstall_Prompt(Operator):
     def execute(self, context):
         scene = context.scene
         prop = scene.patblend
-        
+        show = prop.console
+
+        if show:
+            print()
+            print("------------------- PatBlend Logging Start -------------------")
+            print("Uninstalling...")
+            print("------------------- PatBlend Logging End -------------------")
+            print()
+
         bpy.ops.wm.patblend_uninstall_warning('INVOKE_DEFAULT')
         return {'FINISHED'}
 
@@ -751,6 +759,14 @@ class PATBLEND_OT_DisablePrompt(bpy.types.Operator):
     def execute(self, context):
         scene = context.scene
         prop = scene.patblend
+        show = patblend.console
+
+        if show:
+            print()
+            print("------------------- PatBlend Logging Start -------------------")
+            print("Disabling...")
+            print("------------------- PatBlend Logging End -------------------")
+            print()
         
         bpy.ops.wm.patblend_disable_warning('INVOKE_DEFAULT')
         return {'FINISHED'}
