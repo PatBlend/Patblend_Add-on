@@ -301,7 +301,7 @@ class PatBlendAddonProperties(PropertyGroup):
         default = True)
 
     openGit: BoolProperty(
-        name = "Open GitHub when uninstalling",
+        name = "Open GitHub after uninstalling",
         description = "Blender opens GitHub when uninstalling to download the latest version.",
         default = True)
         
