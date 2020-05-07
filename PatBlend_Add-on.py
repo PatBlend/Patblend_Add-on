@@ -252,8 +252,8 @@ class PatBlendAddonProperties(PropertyGroup):
         
     ########## Search Properties ##########
     search_url: StringProperty(
-        name="Query",
-        description="URL",
+        name="",
+        description="Enter anything. To search a hyperlink, start with \"https://\"",
         )
         
     ########## Unit Converter Properties ##########
@@ -978,7 +978,9 @@ class PATBLEND_PT_SearchMainPanel(Panel, bpy.types.Panel):
         scene = context.scene
         prop = scene.patblend
         layout.prop(prop, "search_url")
-        layout.operator("wm.patblend_search")
+        row = layout.row()
+        row.scale_y = 2
+        row.operator("wm.patblend_search")
         layout.separator()
         
         
@@ -1071,8 +1073,9 @@ class PATBLEND_PT_UnitLengthPanel(Panel, bpy.types.Panel):
                 value /= 1600
             return value
 
-        layout.prop(prop, "inputType")
-        layout.prop(prop, "outputType")
+        row = layout.row(align = True)
+        row.prop(prop, "inputType")
+        row.prop(prop, "outputType")
         row = layout.row(align=True)
         row.prop(prop, "input")
         row.prop(prop, "precision")
