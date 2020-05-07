@@ -696,6 +696,27 @@ class WM_OT_PatBlendSite(Operator):
         
         return {'FINISHED'}
 
+class WM_OT_PatBlendDownload(Operator):
+    bl_label = "Direct\nDownload"
+    bl_idname = "wm.patblend_download"
+
+    def execute(self, context):
+        scene = context.scene
+        prop = scene.patblend
+        show = prop.console
+        
+        if show:
+            print()
+            print("------------------- PatBlend Logging Start -------------------")
+            print("Redirecting to https://github.com/PatBlend/Patblend_Add-on/archive/master.zip")
+
+        bpy.ops.wm.url_open(url="https://github.com/PatBlend/Patblend_Add-on/archive/master.zip")
+
+        if show:
+            print("Redirection Successful")
+            print("------------------- PatBlend Logging End -------------------")
+            print()
+
     
 
 ########## Uninstallation ##########
