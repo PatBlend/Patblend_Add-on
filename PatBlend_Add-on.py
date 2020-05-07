@@ -697,7 +697,7 @@ class WM_OT_PatBlendSite(Operator):
         return {'FINISHED'}
 
 class WM_OT_PatBlendDownload(Operator):
-    bl_label = "Direct\nDownload"
+    bl_label = "Direct Download"
     bl_idname = "wm.patblend_download"
 
     def execute(self, context):
@@ -716,6 +716,8 @@ class WM_OT_PatBlendDownload(Operator):
             print("Redirection Successful")
             print("------------------- PatBlend Logging End -------------------")
             print()
+
+        return {'FINISHED'}
 
     
 
@@ -855,9 +857,12 @@ class PATBLEND_PT_PatBlendQuickOptions(Panel, bpy.types.Panel):
         layout.prop(prop, "console")
         layout.prop(prop, "openGit")
         row = layout.row(align = True)
-        row.scale_y = 2.5
+        row.scale_y = 2
         row.operator("wm.patblend_disable_prompt")
         row.operator("wm.patblend_uninstall_prompt")
+        row = layout.row()
+        row.scale_y = 4
+        row.operator("wm.patblend_download")
 
 class PATBLEND_PT_PatBlendLinks(Panel, bpy.types.Panel):
     bl_parent_id = "PATBLEND_PT_PatBlendOptionsPanel"
@@ -1170,7 +1175,7 @@ class PATBLEND_PT_UnitTimePanel(Panel, bpy.types.Panel):
             row = layout.row(align = True)
             row.prop(prop, "time_num_time")
             row.prop(prop, "time_mult")
-            sec = prop.time_num_time
+            sec = prop.time_num_time * prop.time_mult
 
             hour = math.floor(sec / 3600)        # Find Hours
             sec -= hour * 3600                   # Subtract from seconds
@@ -1241,6 +1246,7 @@ classes = (PatBlendAddonProperties,
                WM_OT_CAdvExecute,
                WM_OT_GitHub,
                WM_OT_PatBlendSite,
+               WM_OT_PatBlendDownload,
                PATBLEND_OT_Uninstall_Prompt,
                PATBLEND_OT_Uninstall_Warning,
                PATBLEND_OT_Uninstall_Warning_2,
