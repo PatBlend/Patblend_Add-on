@@ -759,7 +759,7 @@ class PATBLEND_OT_DisablePrompt(bpy.types.Operator):
     def execute(self, context):
         scene = context.scene
         prop = scene.patblend
-        show = patblend.console
+        show = prop.console
 
         if show:
             print()
@@ -1169,16 +1169,29 @@ class PATBLEND_PT_UnitTimePanel(Panel, bpy.types.Panel):
             layout.label(text = text2)
 
         elif prop.time_convert_type == '1':
-            '''
-            layout.prop(prop, time_str_time)
             time = prop.time_str_time
-            numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-            colons = []
-            for i in len(time):
-                if time[i] == ":":
-                    colons.append(i)
-            '''
-            layout.label(text = "In development")
+            nums = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+            '00:00:00.00'
+            layout.label(text = "Note: Time must be in")
+            layout.label(text = "the form hh:mm:ss.ss.")
+            layout.separator()
+            layout.label(text = "This will be improved")
+            layout.label(text = "in the future.")
+            layout.separator()
+            layout.prop(prop, "time_str_time")
+            time = prop.time_str_time
+            if len(time) == 11:
+                if time[0] in nums and time[1] in nums and time[3] in nums and time[4] in nums and time[6] in nums and time[7] in nums and time[9] in nums and time[10] in nums and time[2] == ":" and time[5] == ":" and time[8] == ".":
+                    hour = int(time[0] + time[1])
+                    min = int(time[3] + time[4])
+                    sec = float(time[6] + time[7] + "." + time[9] + time[10])
+                    totalSec = 3600 * hour + 60 * min + sec
+                    text = str(totalSec) + " Seconds."
+                    layout.label(text = text)
+                else:
+                    layout.label(text = "Invalid Time")
+            else:
+                layout.label(text = "Invalid Time")
             
         
         
