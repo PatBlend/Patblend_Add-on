@@ -697,7 +697,7 @@ class PATBLEND_OT_PatBlendSite(Operator):
         return {'FINISHED'}
 
 class PATBLEND_OT_PatBlendDownload(Operator):
-    bl_label = "Direct Download"
+    bl_label = "Download Latest Version .zip File"
     bl_idname = "wm.patblend_download"
 
     def execute(self, context):
@@ -1287,6 +1287,8 @@ classes = (PatBlendAddonProperties,
            PATBLEND_PT_UnitLengthPanel,
            PATBLEND_PT_UnitTimePanel)
            
+
+custIcons = None
 def register():
     from bpy.utils import register_class
     for cls in classes:
@@ -1294,11 +1296,6 @@ def register():
     bpy.types.Scene.patblend = PointerProperty(type = PatBlendAddonProperties)
     
 def unregister():
-    for i in range(10):
-        print()
-    print("Thanks for using PatBlend Add-ons!")
-    print("If you haven't already, you can sign up for a PatBlend account to gain access to a whole library of premium 3D assets.")
-    print("To do that, click the \"Report a Bug\" button in the Add-ons section of preferences.")
     from bpy.utils import unregister_class
     for cls in reversed(classes):
         unregister_class(cls)
