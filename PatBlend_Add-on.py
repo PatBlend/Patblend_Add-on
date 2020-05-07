@@ -710,7 +710,7 @@ class WM_OT_PatBlendDownload(Operator):
             print("------------------- PatBlend Logging Start -------------------")
             print("Redirecting to https://github.com/PatBlend/Patblend_Add-on/archive/master.zip")
 
-        bpy.ops.wm.url_open(url="https://github.com/PatBlend/Patblend_Add-on/archive/master.zip")
+        bpy.ops.wm.patblend_download_ask('INVOKE_DEFAULT')
 
         if show:
             print("Redirection Successful")
@@ -719,6 +719,20 @@ class WM_OT_PatBlendDownload(Operator):
 
         return {'FINISHED'}
 
+class PATBLEND_OT_DownloadAsk(bpy.types.Operator):
+    bl_label = "Confirmation"
+    bl_idname = "wm.patblend_download_ask"
+
+    def invoke(self, context, event):
+        return context.window_manager.invoke_props_dialog(self)
+
+    def draw(self, context):
+        col = self.layout.column()
+        col.scale_y = 1
+
+    def execute(self, context):
+        bpy.ops.wm.url_open(url="https://github.com/PatBlend/Patblend_Add-on/archive/master.zip")
+        return {'FINISHED'}
     
 
 ########## Uninstallation ##########
@@ -1247,6 +1261,7 @@ classes = (PatBlendAddonProperties,
                WM_OT_GitHub,
                WM_OT_PatBlendSite,
                WM_OT_PatBlendDownload,
+               PATBLEND_OT_DownloadAsk,
                PATBLEND_OT_Uninstall_Prompt,
                PATBLEND_OT_Uninstall_Warning,
                PATBLEND_OT_Uninstall_Warning_2,
