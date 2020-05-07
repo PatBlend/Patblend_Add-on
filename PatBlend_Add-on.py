@@ -696,7 +696,7 @@ class WM_OT_PatBlendSite(Operator):
 ########## Uninstallation ##########
 # Prompt
 class PATBLEND_OT_Uninstall_Prompt(Operator):
-    bl_label = "Uninstall PatBlend Add-on"
+    bl_label = "Uninstall"
     bl_idname = "wm.patblend_uninstall_prompt"
     
     def execute(self, context):
@@ -724,7 +724,7 @@ class PATBLEND_OT_Uninstall_Warning(bpy.types.Operator):
         bpy.ops.wm.patblend_uninstall_warning_2('INVOKE_DEFAULT')
         return {'FINISHED'}
     
-# Warning 2
+# Warning 2 and Uninstall
 class PATBLEND_OT_Uninstall_Warning_2(bpy.types.Operator):
     bl_label = "Are you very sure?"
     bl_idname = "wm.patblend_uninstall_warning_2"
@@ -738,17 +738,38 @@ class PATBLEND_OT_Uninstall_Warning_2(bpy.types.Operator):
         col.label(text = "This action cannot be undone.")
     
     def execute(self, context):
-        bpy.ops.wm.patblend_uninstall()
+        bpy.ops.preferences.addon_remove(module = "PatBlend_Add-on")
         return {'FINISHED'}
-        
-# Uninstall
-class PATBLEND_OT_Uninstall(bpy.types.Operator):
-    bl_idname = "wm.patblend_uninstall"
-    bl_label = "Uninstalling"
+
+
+
+########## Disable ##########
+class PATBLEND_OT_DisablePrompt(bpy.types.Operator):
+    bl_label = "Disable"
+    bl_idname = "wm.patblend_disable_prompt"
     
     def execute(self, context):
-        time.sleep(0.1)
-        bpy.ops.preferences.addon_remove(module = "PatBlend_Add-on")
+        scene = context.scene
+        prop = scene.patblend
+        
+        bpy.ops.wm.patblend_disable_warning('INVOKE_DEFAULT')
+        return {'FINISHED'}
+    
+class PATBLEND_OT_Disable(bpy.types.Operator):
+    bl_label = "Are you sure?"
+    bl_idname = "wm.patblend_disable_warning"
+
+    def invoke(self, context, event):
+        return context.window_manager.invoke_props_dialog(self)
+
+    def draw(self, context):
+        col = self.layout.column()
+        col.scale_y = 1
+        col.label(text = "The add-on will be disabled until you enable it again.")
+        col.label(text = "You can find it in preferences by searching \"PatBlend\".")
+
+    def execute(self, context):
+        bpy.ops.preferences.addon_disable(module = "PatBlend_Add-on")
         return {'FINISHED'}
 
 
@@ -784,8 +805,9 @@ class PATBLEND_PT_PatBlendQuickOptions(Panel, bpy.types.Panel):
         prop = scene.patblend
 
         layout.prop(prop, "console")
-        row = layout.row()
+        row = layout.row(align = True)
         row.scale_y = 2.5
+        row.operator("wm.patblend_disable_prompt")
         row.operator("wm.patblend_uninstall_prompt")
 
 class PATBLEND_PT_PatBlendLinks(Panel, bpy.types.Panel):
@@ -1157,7 +1179,9 @@ classes = (PatBlendAddonProperties,
                PATBLEND_OT_Uninstall_Prompt,
                PATBLEND_OT_Uninstall_Warning,
                PATBLEND_OT_Uninstall_Warning_2,
-               PATBLEND_OT_Uninstall,
+
+               PATBLEND_OT_DisablePrompt,
+               PATBLEND_OT_Disable,
                
                PATBLEND_PT_PatBlendOptionsPanel,
                PATBLEND_PT_PatBlendQuickOptions,
