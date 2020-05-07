@@ -299,6 +299,11 @@ class PatBlendAddonProperties(PropertyGroup):
         name = "Show info in console",
         description = "Shows important information in the system console as the add-on functions.",
         default = True)
+
+    openGit: BoolProperty(
+        name = "Open GitHub when uninstalling",
+        description = "Blender opens GitHub when uninstalling to download the latest version.",
+        default = True)
         
     time_convert_type: EnumProperty(
         name = "Conversion Type",
@@ -746,6 +751,12 @@ class PATBLEND_OT_Uninstall_Warning_2(bpy.types.Operator):
         col.label(text = "This action cannot be undone.")
     
     def execute(self, context):
+        scene = context.scene
+        prop = scene.patblend
+        open = prop.openGit
+        
+        if open:
+            bpy.ops.wm.url_open(url="https://github.com/PatBlend/Patblend_Add-on")
         bpy.ops.preferences.addon_remove(module = "PatBlend_Add-on")
         return {'FINISHED'}
 
@@ -821,6 +832,7 @@ class PATBLEND_PT_PatBlendQuickOptions(Panel, bpy.types.Panel):
         prop = scene.patblend
 
         layout.prop(prop, "console")
+        layout.prop(prop, "openGit")
         row = layout.row(align = True)
         row.scale_y = 2.5
         row.operator("wm.patblend_disable_prompt")
