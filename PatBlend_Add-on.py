@@ -697,7 +697,7 @@ class PATBLEND_OT_PatBlendSite(Operator):
         return {'FINISHED'}
 
 class PATBLEND_OT_PatBlendDownload(Operator):
-    bl_label = "Download Latest Version .zip File"
+    bl_label = "Direct Download Latest Version .zip File"
     bl_idname = "wm.patblend_download"
 
     def execute(self, context):
@@ -794,7 +794,11 @@ class PATBLEND_OT_Uninstall_Warning_2(bpy.types.Operator):
         
         if open:
             bpy.ops.wm.url_open(url="https://github.com/PatBlend/Patblend_Add-on")
+        time.sleep(0.1)
+        bpy.ops.preferences.addon_disable(module = "PatBlend_Add-on")
+        time.sleep(0.1)
         bpy.ops.preferences.addon_remove(module = "PatBlend_Add-on")
+        time.sleep(0.1)
         return {'FINISHED'}
 
 
