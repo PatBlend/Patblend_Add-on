@@ -326,6 +326,17 @@ class PatBlendAddonProperties(PropertyGroup):
         description = "Amount to be multiplied with the input time in seconds.",
         default = 1, min = 0)
 
+    sizeTheme: EnumProperty(
+        name = "Size Theme",
+        description = "Choose various types of layout arranges",
+        items = [
+            ('0', 'Minimal', 'All elements are single-line sized.'),
+            ('1', 'Compact', 'Most elements are single sized, but major ones are larger.'),
+            ('2', 'Normal', 'Various sizes, from single to quadruple.'),
+            ('3', 'Comfortable', 'Comfortable sizes, from 1.5 to 6'),
+            ('4', 'Large', 'Sizes ranging from 3 to 10'),
+            ('5', 'Extra Large', 'Sizes ranging from 6 to 17')])
+
 ##############################################################
 # Buttons
 ##############################################################
@@ -866,12 +877,14 @@ class PATBLEND_PT_PatBlendQuickOptions(Panel, bpy.types.Panel):
         scene = context.scene
         prop = scene.patblend
 
-        layout.prop(prop, "console")
-        layout.prop(prop, "openGit")
+        row = layout.row
+        row.prop(prop, "console")
+        row.prop(prop, "openGit")
         row = layout.row(align = True)
         row.scale_y = 10
         row.operator("wm.patblend_disable_prompt")
         row.operator("wm.patblend_uninstall_prompt")
+        layout.prop(prop, "sizeTheme")
 
 class PATBLEND_PT_PatBlendLinks(Panel, bpy.types.Panel):
     bl_parent_id = "PATBLEND_PT_PatBlendOptionsPanel"
