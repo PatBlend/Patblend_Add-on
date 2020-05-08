@@ -325,14 +325,6 @@ class PatBlendAddonProperties(PropertyGroup):
         name = "Multiplier",
         description = "Amount to be multiplied with the input time in seconds.",
         default = 1, min = 0)
-    
-    addon_location: EnumProperty(
-        name = "Add-on Location",
-        description = "Where the add-on appears in the UI",
-        items = [
-            ('0', "3D View > Sidebar", "Press \"n\" to view the sidebar."),
-            ('1', "Properties > Scene", "")])
-
 
 ##############################################################
 # Buttons
@@ -877,7 +869,7 @@ class PATBLEND_PT_PatBlendQuickOptions(Panel, bpy.types.Panel):
         layout.prop(prop, "console")
         layout.prop(prop, "openGit")
         row = layout.row(align = True)
-        row.scale_y = 2
+        row.scale_y = 10
         row.operator("wm.patblend_disable_prompt")
         row.operator("wm.patblend_uninstall_prompt")
 
@@ -1296,6 +1288,7 @@ classes = (PatBlendAddonProperties,
 
 custIcons = None
 def register():
+    
     from bpy.utils import register_class
     for cls in classes:
         register_class(cls)
