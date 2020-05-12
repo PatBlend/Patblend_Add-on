@@ -56,13 +56,13 @@ All the options can be found in <i>3D View >> Sidebar ('n') >> PatBlend</i>
 <b>A brief description of each sub-add-on:</b>
 
 <b>Render Setup:</b>
-This add-on has a user friendly interface. It quickly sets up the render engine of your choice. Right now, there are five panels: Eevee Simple, Eevee Advanced, Workbench, Cycles Simple, and Cycles Advanced. There are simple settings such as Samples, Output size, FPS, and World Color that helps an artist focus on what matters.
+This add-on has a user friendly interface. It quickly sets up the render engine of your choice. There are simple settings such as Samples, Output size, FPS, and World Color that helps an artist focus on what matters.
 
 <b>Unit Converter:</b>
-A quick way to convert between different units of measurement. This add-on has two dropdown menus asking for the unit types, and one number field. It converts in realtime.
+A quick way to convert between different units. This add-on can convert Length and Time, and even give a brief description of each unit.
 
 <b>Quick Search:</b>
 Need to search for a reference image or a texture, but only have one monitor? Quick Search helps with that. All you need to do is type in an URL or a keyword and press Search. Blender will automatically open your default browser and provide you with answers.
 
 <b>Coder-Decoder:</b>
-If you need to send a secret message, you can code it with the PatBlend Coder-Decoder.
+If you need to send a secret message, you can code it with the PatBlend Coder-Decoder. People without this Add-on will be baffled!

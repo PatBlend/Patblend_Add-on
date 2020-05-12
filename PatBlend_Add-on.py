@@ -31,7 +31,7 @@ bl_info = {
 
 
 import bpy, math, time, datetime
-from bpy.props import (StringProperty, 
+from bpy.props import (StringProperty,      # Import Blender python properties
                        BoolProperty, 
                        IntProperty, 
                        FloatProperty, 
@@ -39,12 +39,13 @@ from bpy.props import (StringProperty,
                        EnumProperty, 
                        PointerProperty
                        )
-from bpy.types import (Panel, 
+from bpy.types import (Panel,               # Import Blender UI Types
                        Menu, 
                        Operator, 
                        PropertyGroup
                        )
 activated = False
+
 
 ########## Properties ##########
 class PatBlendProps(PropertyGroup):
@@ -52,6 +53,12 @@ class PatBlendProps(PropertyGroup):
     consoleInfo: BoolProperty(
         name = "Show info in Console",
         description = "Prints information about status and the add-on in the system Console.",
+        default = True
+    )
+
+    textInfo: BoolProperty(
+        name = "Log info in text",
+        description = "Creates a text datablock and logs information in the text.",
         default = True
     )
 
@@ -85,6 +92,8 @@ class PatBlendProps(PropertyGroup):
         items = [
             ('1.0.0', "1.0.0", "Version 1.0.0"),
             ('1.0.1', "1.0.1", "Version 1.0.1"),
+            ('1.0.2 Alpha', "1.0.2 Alpha", "Version 1.0.2 Alpha"),
+            ('Master', "Master", "Latest development version")
         ]
     )
 
@@ -97,6 +106,7 @@ class PatBlendProps(PropertyGroup):
             ('1', "Workbench", "Studio Lighting Engine"),
             ('2', "Cycles", "Raytraced Engine")
         ],
+        default = {'0'},
         options = {'ENUM_FLAG'}
     )
 
@@ -194,7 +204,18 @@ class PatBlendProps(PropertyGroup):
         default = 1, min = 0
     )
 
-    # Unit Converter
+    # Unit Manipulator
+    lengthFunc: EnumProperty(
+        name = "Function",
+        description = "What the Length Manipulator performs.",
+        items = [
+            ('0', "Convert", "Converts from one unit to another."),
+            ('1', "Comparing", "Compares units to common objects.")
+        ],
+        options = {'ENUM_FLAG'},
+        default = {'0'}
+    )
+
     lengthType1: EnumProperty(
         name = "From",
         description = "The input is in this unit.",
@@ -225,10 +246,16 @@ class PatBlendProps(PropertyGroup):
         ]
     )
     
-    numUnit: FloatProperty(
+    lengthNum: FloatProperty(
         name = "Input",
         description = "Input value. The unit is defined above.",
         default = 12.5, min = 0
+    )
+
+    lengthPrec: IntProperty(
+        name = "Non-Zero Decimal Places",
+        description = "Amount of non-zero numbers after the decimal point to display.",
+        default = 3, min = 0, max = 7
     )
 
     # Quick Search
@@ -255,6 +282,7 @@ class PatBlendProps(PropertyGroup):
             ('0', "Encoding", "Takes human language and codes it into a PatBlend code."),
             ('1', "Decoding", "Takes PatBlend code and decodes it into human language.")
         ],
+        default = {'0'},
         options = {'ENUM_FLAG'}
     )
 
@@ -271,6 +299,12 @@ class PatBlendProps(PropertyGroup):
     codeIn: StringProperty(
         name = "Input",
         description = "String to pass to the codec."
+    )
+
+    dateTimeStamp: BoolProperty(
+        name = "Create Datetime Stamp in Text",
+        description = "Creates a log of when and what day the code was created.",
+        default = False
     )
 
 
@@ -308,8 +342,14 @@ def GetDateTime():
     time = raw[11:19]
     return [date, time]
 
+def CheckText():
+    if "PatBlend_Logging" in bpy.data.texts:
+        PatText = bpy.data.texts['PatBlend_Logging']
+    else:
+        PatText = bpy.data.texts.new("PatBlend_Logging")
+    return PatText
 
-########## Buttons ##########
+########## Operators ##########
 class PATBLEND_OT_Activate(Operator):
     bl_label = "Activate Add-on"
     bl_idname = "patblend.activate"
@@ -328,6 +368,14 @@ class PATBLEND_OT_DisablePrompt(Operator):
     def execute(self, context):
         scene = context.scene
         prop = scene.patblend
+        
+        text = CheckText()
+        dateTime = GetDateTime()
+        dateTime = dateTime[0] + " " + dateTime[1]
+
+        text.write(dateTime + "\n")
+        text.write("Pressed Button Disable\n")
+        text.write("______________________________\n\n")
 
         bpy.ops.patblend.disable_warning('INVOKE_DEFAULT')
         
@@ -347,6 +395,14 @@ class PATBLEND_OT_Disable(Operator):
         col.label(text = "You can find it in preferences by searching \"PatBlend\".")
 
     def execute(self, context):
+        text = CheckText()
+        dateTime = GetDateTime()
+        dateTime = dateTime[0] + " " + dateTime[1]
+
+        text.write(dateTime + "\n")
+        text.write("Disabled PatBlend Add-on\n")
+        text.write("______________________________\n\n")
+        
         bpy.ops.preferences.addon_disable(module = "PatBlend_Add-on")
         return {'FINISHED'}
 
@@ -358,6 +414,14 @@ class PATBLEND_OT_UninstallPrompt(Operator):
     def execute(self, context):
         scene = context.scene
         prop = scene.patblend
+
+        text = CheckText()
+        dateTime = GetDateTime()
+        dateTime = dateTime[0] + " " + dateTime[1]
+
+        text.write(dateTime + "\n")
+        text.write("Pressed Button Uninstall\n")
+        text.write("______________________________\n\n")
 
         bpy.ops.patblend.uninstall_warning('INVOKE_DEFAULT')
 
@@ -392,6 +456,14 @@ class PATBLEND_OT_Uninstall(Operator):
         open = prop.openGit
         down = prop.downloadLatest
 
+        text = CheckText()
+        dateTime = GetDateTime()
+        dateTime = dateTime[0] + " " + dateTime[1]
+
+        text.write(dateTime + "\n")
+        text.write("Uninstalled PatBlend Add-on\n")
+        text.write("______________________________\n\n")
+
         if open:
             bpy.ops.wm.url_open(url = "https://github.com/PatBlend/Patblend_Add-on")
             if down:
@@ -409,6 +481,14 @@ class PATBLEND_OT_LinkGit(Operator):
     bl_description = "Opens the PatBlend GitHub."
 
     def execute(self, context):
+        text = CheckText()
+        dateTime = GetDateTime()
+        dateTime = dateTime[0] + " " + dateTime[1]
+
+        text.write(dateTime + "\n")
+        text.write("Opened PatBlend GitHub\n")
+        text.write("______________________________\n\n")
+        
         bpy.ops.wm.url_open(url = "https://github.com/PatBlend/Patblend_Add-on")
         return {'FINISHED'}
 
@@ -418,6 +498,14 @@ class PATBLEND_OT_LinkSite(Operator):
     bl_description = "Opens the PatBlend Website."
 
     def execute(self, context):
+        text = CheckText()
+        dateTime = GetDateTime()
+        dateTime = dateTime[0] + " " + dateTime[1]
+
+        text.write(dateTime + "\n")
+        text.write("Opened PatBlend Website\n")
+        text.write("______________________________\n\n")
+        
         bpy.ops.wm.url_open(url = "https://sites.google.com/view/patblend")
         return {'FINISHED'}
 
@@ -427,6 +515,14 @@ class PATBLEND_OT_Documentation(Operator):
     bl_description = "Opens a document with documentation"
 
     def execute(self, context):
+        text = CheckText()
+        dateTime = GetDateTime()
+        dateTime = dateTime[0] + " " + dateTime[1]
+
+        text.write(dateTime + "\n")
+        text.write("Opened Add-on Documentation\n")
+        text.write("______________________________\n\n")
+        
         bpy.ops.wm.url_open(url = "https://docs.google.com/document/d/1XOM4b5h3V0qt4dcGYBnKsm38zUuzH1tuJu2kfg3YACA/edit")
         return {'FINISHED'}
 
@@ -436,6 +532,14 @@ class PATBLEND_OT_ReportBug(Operator):
     bl_description = "Goes to the page to report a bug."
 
     def execute(self, context):
+        text = CheckText()
+        dateTime = GetDateTime()
+        dateTime = dateTime[0] + " " + dateTime[1]
+
+        text.write(dateTime + "\n")
+        text.write("Opened Report a Bug Form\n")
+        text.write("______________________________\n\n")
+        
         bpy.ops.wm.url_open(url = "https://docs.google.com/forms/d/e/1FAIpQLScJGRE0jJu17OvDQ5o-BK56fIaUuzbP086LXhQdzMB_ySBbrw/viewform?usp=sf_link")
         return {'FINISHED'}
 
@@ -445,6 +549,14 @@ class PATBLEND_OT_DownloadLatest(Operator):
     bl_description = "Downloads the master branch in GitHub."
 
     def execute(self, context):
+        text = CheckText()
+        dateTime = GetDateTime()
+        dateTime = dateTime[0] + " " + dateTime[1]
+
+        text.write(dateTime + "\n")
+        text.write("Downloaded Master Branch\n")
+        text.write("______________________________\n\n")
+        
         bpy.ops.wm.url_open(url = "https://github.com/PatBlend/Patblend_Add-on")
         bpy.ops.wm.url_open(url = "https://github.com/PatBlend/Patblend_Add-on/archive/master.zip")
         return {'FINISHED'}
@@ -459,7 +571,23 @@ class PATBLEND_OT_DownloadPrevious(Operator):
         prop = scene.patblend
         version = prop.version
 
-        url = "https://github.com/PatBlend/Patblend_Add-on/archive/v" + version + ".zip"
+        text = CheckText()
+        dateTime = GetDateTime()
+        dateTime = dateTime[0] + " " + dateTime[1]
+
+        text.write(dateTime + "\n")
+        text.write("Downloaded " + version + "\n")
+        text.write("______________________________\n\n")
+
+        if version == '1.0.0':
+            url = "https://github.com/PatBlend/Patblend_Add-on/archive/v1.0.0.zip"
+        if version == '1.0.1':
+            url = "https://github.com/PatBlend/Patblend_Add-on/archive/v1.0.1.zip"
+        if version == '1.0.2 Alpha':
+            url = "https://github.com/PatBlend/Patblend_Add-on/archive/v1.0.2-alpha.zip"
+        if version == 'Master':
+            url = "https://github.com/PatBlend/Patblend_Add-on/archive/master.zip"
+        
         bpy.ops.wm.url_open(url = "https://github.com/PatBlend/Patblend_Add-on")
         bpy.ops.wm.url_open(url = url)
         return {'FINISHED'}
@@ -472,6 +600,14 @@ class PATBLEND_OT_DownloadAll(Operator):
     def execute(self, context):
         scene = context.scene
         prop = scene.patblend
+
+        text = CheckText()
+        dateTime = GetDateTime()
+        dateTime = dateTime[0] + " " + dateTime[1]
+
+        text.write(dateTime + "\n")
+        text.write("Pressed Button Download all\n")
+        text.write("______________________________\n\n")
 
         bpy.ops.patblend.download_all_confirm('INVOKE_DEFAULT')
 
@@ -487,19 +623,31 @@ class PATBLEND_OT_DownloadAllConfirm(Operator):
     def draw(self, context):
         col = self.layout.column()
         col.scale_y = 1
-        col.label(text = "This will download the following 3 files:")
+        col.label(text = "This will download the following 4 files:")
         col.label(text = "    PatBlend_Add-on-master")
         col.label(text = "    PatBlend_Add-on-v1.0.0")
         col.label(text = "    PatBlend_Add-on-v1.0.1")
+        col.label(text = "    PatBlend_Add-on-v1.0.2-alpha")
+        col.label(text = "")
+        col.label(text = "The combined file size is 80.4 KB")
 
     def execute(self, context):
         scene = context.scene
         prop = scene.patblend
         version = prop.version
 
+        text = CheckText()
+        dateTime = GetDateTime()
+        dateTime = dateTime[0] + " " + dateTime[1]
+
+        text.write(dateTime + "\n")
+        text.write("Downloaded all versions\n")
+        text.write("______________________________\n\n")
+
         bpy.ops.wm.url_open(url = "https://github.com/PatBlend/Patblend_Add-on")
         bpy.ops.wm.url_open(url = "https://github.com/PatBlend/Patblend_Add-on/archive/v1.0.0.zip")
         bpy.ops.wm.url_open(url = "https://github.com/PatBlend/Patblend_Add-on/archive/v1.0.1.zip")
+        bpy.ops.wm.url_open(url = "https://github.com/PatBlend/Patblend_Add-on/archive/v1.0.2-alpha.zip")
         bpy.ops.wm.url_open(url = "https://github.com/PatBlend/Patblend_Add-on/archive/master.zip")
 
         return {'FINISHED'}
@@ -510,6 +658,14 @@ class PATBLEND_OT_RenderSetup(Operator):
     bl_description = "Setup the render engine according to the settings."
 
     def execute(self, context):
+        text = CheckText()
+        dateTime = GetDateTime()
+        dateTime = dateTime[0] + " " + dateTime[1]
+
+        text.write(dateTime + "\n")
+        text.write("Set up render engines\n")
+        text.write("______________________________\n\n")
+        
         return {'FINISHED'}
 
 class PATBLEND_OT_Search(Operator):
@@ -523,6 +679,14 @@ class PATBLEND_OT_Search(Operator):
         theme = prop.sizeTheme
         address = prop.address
         force = prop.searchForce
+
+        text = CheckText()
+        dateTime = GetDateTime()
+        dateTime = dateTime[0] + " " + dateTime[1]
+
+        text.write(dateTime + "\n")
+        text.write("Searched\n")
+        text.write("______________________________\n\n")
 
         def CheckUrl(address):
             url = False
@@ -552,17 +716,31 @@ class PATBLEND_OT_Search(Operator):
 class PATBLEND_OT_CreateText(Operator):
     bl_label = "Create Text"
     bl_description = "Creates a text datablock with the code."
-    bl_idname = "patblend.copy_clip"
+    bl_idname = "patblend.create_text"
 
     def execute(self, context):
         scene = context.scene
         prop = scene.patblend
+        dts = prop.dateTimeStamp
+
+        text = CheckText()
+        dateTime = GetDateTime()
+        dateTime = dateTime[0] + " " + dateTime[1]
+
+        text.write(dateTime + "\n")
+        text.write("Created codec Text\n")
+        text.write("______________________________\n\n")
 
         dateTime = GetDateTime()
-        newText = bpy.data.texts.new("PatBlend_Add-on_Coder")
-        print(type(dateTime[1]))
-        newText.write("Created on " + dateTime[0] + ", " + dateTime[1])
-        newText.write("\n\n" + PatBlendCodecCoded)
+        if "PatBlend_Add-on_Coder" in bpy.data.texts:
+            newText = bpy.data.texts["PatBlend_Add-on_Coder"]
+        else:
+            newText = bpy.data.texts.new("PatBlend_Add-on_Coder")
+        
+        if dts:
+            newText.write("Created on " + dateTime[0] + ", " + dateTime[1] + "\n\n")
+        newText.write(PatBlendCodecCoded + "\n")
+        newText.write("__________________________________________________" + "\n\n")
 
         return {'FINISHED'}
 
@@ -609,10 +787,6 @@ class PATBLEND_PT_SettingsQuick(Panel, bpy.types.Panel):
         row.operator("patblend.disable_prompt", text = "Disable")
 
         row = layout.row()
-        row.scale_y = GetSize(theme, 3)
-        row.prop(prop, "sizeTheme")
-
-        row = layout.row()
         row.scale_y = GetSize(theme, 2)
         row.prop(prop, "openGit")
         
@@ -620,6 +794,18 @@ class PATBLEND_PT_SettingsQuick(Panel, bpy.types.Panel):
         row.enabled = prop.openGit
         row.scale_y = GetSize(theme, 2)
         row.prop(prop, "downloadLatest")
+
+        row = layout.row()
+        row.scale_y = GetSize(theme, 3)
+        row.prop(prop, "sizeTheme")
+
+        row = layout.row()
+        row.scale_y = GetSize(theme, 2)
+        row.prop(prop, "consoleInfo")
+
+        row = layout.row()
+        row.scale_y = GetSize(theme, 2)
+        row.prop(prop, "textInfo")
 
 class PATBLEND_PT_SettingsLinks(Panel, bpy.types.Panel):
     bl_parent_id = "PATBLEND_PT_Settings"
@@ -778,6 +964,8 @@ class PATBLEND_PT_Codec(Panel, bpy.types.Panel):
         theme = prop.sizeTheme
         codeType = prop.codeType
 
+
+        ########## Initialize
         PatAscii = ['1', '>', 'X', 'D', 'P', 'h', '3', 'F', ')', 'g', '/', 'U', 'M', 'I', 'z', 's', 'j', '-', ':', 'E', 'x', 'S', '\\', '.', 'W', '%', 
                     "'", '<', 'Z', '}', '?', 'd', '@', '5', '|', 'L', ']', '#', 'a', ' ', 'f', '9', 't', '7', 'J', 'l', 'w', 'K', ';', '&', 'm', 'T', 
                     'e', '"', '!', '6', 'C', 'Q', '(', ',', 'i', 'r', 'O', 'H', '*', '2', 'o', 'n', '=', 'u', 'A', '[', '$', 'b', 'p', '+', 'B', 'k', 
@@ -838,6 +1026,20 @@ class PATBLEND_PT_Codec(Panel, bpy.types.Panel):
                 output += char
             return output
 
+        decode = prop.function == {'1'}
+        input = prop.codeIn
+        if codeType == '0':
+            coded = PatCodec1(decode, input)
+        elif codeType == '1':
+            coded = PatCodec2(decode, input)
+        elif codeType == '2':
+            coded = PatCodec3(decode, input)
+        global PatBlendCodecCoded
+        PatBlendCodecCoded = coded
+
+        
+
+        ########## Drawing
         row = layout.row()
         row.scale_y = GetSize(theme, 3)
         row.prop(prop, "function", expand = True)
@@ -854,21 +1056,200 @@ class PATBLEND_PT_Codec(Panel, bpy.types.Panel):
         row.scale_y = GetSize(theme, 2)
         row.prop(prop, "codeIn")
         
-        decode = prop.function == {'1'}
-        input = prop.codeIn
-        if codeType == '0':
-            coded = PatCodec1(decode, input)
-        elif codeType == '1':
-            coded = PatCodec2(decode, input)
-        elif codeType == '2':
-            coded = PatCodec3(decode, input)
+        row = layout.row()
+        row.scale_y = GetSize(theme, 1)
+        row.prop(prop, "dateTimeStamp")
+
         layout.label(text = coded)
-        global PatBlendCodecCoded
-        PatBlendCodecCoded = coded
 
         row = layout.row()
         row.scale_y = GetSize(theme, 3)
-        row.operator("patblend.copy_clip")
+        row.operator("patblend.create_text")
+
+class PATBLEND_PT_UnitMani(Panel, bpy.types.Panel):
+    bl_idname = "PATBLEND_PT_UnitMani"
+    bl_label = "Unit Manipulator"
+
+    def draw(self, context):
+        scene = context.scene
+        prop = scene.patblend
+
+class PATBLEND_PT_UnitLength(Panel, bpy.types.Panel):
+    bl_label = "Length"
+    bl_parent_id = "PATBLEND_PT_UnitMani"
+
+    def draw(self, context):
+        layout = self.layout
+        scene = context.scene
+        prop = scene.patblend
+        theme = prop.sizeTheme
+        function = prop.lengthFunc
+        
+        dec = prop.lengthPrec
+        unit1 = prop.lengthType1
+        unit2 = prop.lengthType2
+        num = round(prop.lengthNum, dec)
+
+        toMeterMult = [1000, 100, 1, 0.001, 39.37, 3.28, 1.09, 0.000625]
+
+        meters = num / toMeterMult[int(unit1)]
+        unit2s = round(meters * toMeterMult[int(unit2)], dec)
+
+        if num == 1:
+            if unit1 == '0':
+                text1 = str(num) + " " + "Milimeter"
+            if unit1 == '1':
+                text1 = str(num) + " " + "Centimeter"
+            if unit1 == '2':
+                text1 = str(num) + " " + "Meter"
+            if unit1 == '3':
+                text1 = str(num) + " " + "Kilometer"
+            if unit1 == '4':
+                text1 = str(num) + " " + "Inch"
+            if unit1 == '5':
+                text1 = str(num) + " " + "Foot"
+            if unit1 == '6':
+                text1 = str(num) + " " + "Yard"
+            if unit1 == '7':
+                text1 = str(num) + " " + "Mile"
+        else:
+            if unit1 == '0':
+                text1 = str(num) + " " + "Milimeters"
+            if unit1 == '1':
+                text1 = str(num) + " " + "Centimeters"
+            if unit1 == '2':
+                text1 = str(num) + " " + "Meters"
+            if unit1 == '3':
+                text1 = str(num) + " " + "Kilometers"
+            if unit1 == '4':
+                text1 = str(num) + " " + "Inches"
+            if unit1 == '5':
+                text1 = str(num) + " " + "Feet"
+            if unit1 == '6':
+                text1 = str(num) + " " + "Yards"
+            if unit1 == '7':
+                text1 = str(num) + " " + "Miles"
+            
+
+        if unit2s == 1:
+            if unit2 == '0':
+                text2 = str(unit2s) + " " + "Milimeter"
+            if unit2 == '1':
+                text2 = str(unit2s) + " " + "Centimeter"
+            if unit2 == '2':
+                text2 = str(unit2s) + " " + "Meter"
+            if unit2 == '3':
+                text2 = str(unit2s) + " " + "Kilometer"
+            if unit2 == '4':
+                text2 = str(unit2s) + " " + "Inch"
+            if unit2 == '5':
+                text2 = str(unit2s) + " " + "Foot"
+            if unit2 == '6':
+                text2 = str(unit2s) + " " + "Yard"
+            if unit2 == '7':
+                text2 = str(unit2s) + " " + "Mile"
+        else:
+            if unit2 == '0':
+                text2 = str(unit2s) + " " + "Milimeters"
+            if unit2 == '1':
+                text2 = str(unit2s) + " " + "Centimeters"
+            if unit2 == '2':
+                text2 = str(unit2s) + " " + "Meters"
+            if unit2 == '3':
+                text2 = str(unit2s) + " " + "Kilometers"
+            if unit2 == '4':
+                text2 = str(unit2s) + " " + "Inches"
+            if unit2 == '5':
+                text2 = str(unit2s) + " " + "Feet"
+            if unit2 == '6':
+                text2 = str(unit2s) + " " + "Yards"
+            if unit2 == '7':
+                text2 = str(unit2s) + " " + "Miles"
+
+
+
+        row = layout.row(align = True)
+        row.scale_y = GetSize(theme, 3)
+        row.prop(prop, "lengthFunc")
+
+        if function in [{'0'}, {'1'}]:
+            
+
+            if function == {'0'}:
+                row = layout.row(align = True)
+                row.scale_y = GetSize(theme, 2)
+                row.prop(prop, "lengthType1", text = "From")
+
+                row = layout.row(align = True)
+                row.scale_y = GetSize(theme, 2)
+                row.prop(prop, "lengthType2", text = "To")
+
+                row = layout.row(align = True)
+                row.scale_y = GetSize(theme, 2)
+                row.prop(prop, "lengthNum")
+                row.prop(prop, "lengthPrec")
+                
+                layout.label(text = text1)
+                layout.label(text = "Equals")
+                layout.label(text = text2)
+            
+            elif function == {'1'}:
+                row = layout.row(align = True)
+                row.scale_y = GetSize(theme, 2)
+                row.prop(prop, "lengthType1", text = "Unit")
+
+                if unit1 == '0':
+                    layout.label(text = "One milimeter is")
+                    layout.label(text = "  - 0.001 meters")
+                    layout.label(text = "  - Width of a staple")
+                    layout.label(text = "  - Thickness of a Dime")
+                elif unit1 == '1':
+                    layout.label(text = "One centimeter is")
+                    layout.label(text = "  - 0.01 Meters")
+                    layout.label(text = "  - Pencil Diameter")
+                    layout.label(text = "  - Length of a staple")
+                elif unit1 == '2':
+                    layout.label(text = "One meter is")
+                    layout.label(text = "  - 1 Meter")
+                    layout.label(text = "  - Height of a kitchen counter")
+                    layout.label(text = "  - Circumference of a Car Wheel")
+                elif unit1 == '3':
+                    layout.label(text = "One kilometer is")
+                    layout.label(text = "  - 1000 meters")
+                    layout.label(text = "  - 2 KM: Height of the lowest clouds.")
+                elif unit1 == '4':
+                    layout.label(text = "One inch is")
+                    layout.label(text = "  - One inch")
+                    layout.label(text = "  - Rubber Eraser Width")
+                    layout.label(text = "  - Water Bottle Cap")
+                elif unit1 == '5':
+                    layout.label(text = "One foot is")
+                    layout.label(text = "  - 12 Inches")
+                    layout.label(text = "  - A standard ruler")
+                    layout.label(text = "  - A standard paper's length")
+                elif unit1 == '6':
+                    layout.label(text = "One yard is")
+                    layout.label(text = "  - 36 Inches")
+                    layout.label(text = "  - A yardstick")
+                    layout.label(text = "  - Height of a 5 year old")
+                elif unit == '7':
+                    layout.label(text = "One mile is")
+                    layout.label(text = "  - 1760 Yards")
+                    layout.label(text = "  - 1600 Meters")
+                    layout.label(text = "  - Used for measuring speed (mph)")
+        else:
+            layout.label(text = "Please select exactly one function.")
+
+class PATBLEND_PT_UnitTime(Panel, bpy.types.Panel):
+    bl_label = "Time"
+    bl_parent_id = "PATBLEND_PT_UnitMani"
+
+    def draw(self, context):
+        layout = self.layout
+        scene = context.scene
+        prop = scene.patblend
+        
+        layout.label(text = "Will be added later.")
 
 
 
@@ -898,7 +1279,10 @@ classess = (PatBlendProps,        # There is an extra 's' to keep the letter cou
             PATBLEND_PT_RenderEngine,
             PATBLEND_PT_OutputSettings,
             PATBLEND_PT_Search,
-            PATBLEND_PT_Codec)
+            PATBLEND_PT_Codec,
+            PATBLEND_PT_UnitMani,
+            PATBLEND_PT_UnitLength,
+            PATBLEND_PT_UnitTime)
 
 
 def register():
