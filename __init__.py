@@ -24,7 +24,7 @@ bl_info = {
     "version":     (1, 0, 2),
     "blender":     (2, 80, 0),
     "location":    "3D View >> Sidebar >> PatBlend",
-    "warning":     "This Add-on is still in Alpha, and new features are constantly being added.",
+    "warning":     "",
     "wiki_url":    "https://github.com/PatBlend/Patblend_Add-on",
     "tracker_url": "https://docs.google.com/forms/d/e/1FAIpQLScJGRE0jJu17OvDQ5o-BK56fIaUuzbP086LXhQdzMB_ySBbrw/viewform?usp=sf_link",
     "category":    "PatBlend"}
