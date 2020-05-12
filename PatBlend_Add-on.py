@@ -93,6 +93,7 @@ class PatBlendProps(PropertyGroup):
             ('1.0.0', "1.0.0", "Version 1.0.0"),
             ('1.0.1', "1.0.1", "Version 1.0.1"),
             ('1.0.2 Alpha', "1.0.2 Alpha", "Version 1.0.2 Alpha"),
+            ('1.0.2', "1.0.2", "Version 1.0.2"),
             ('Master', "Master", "Latest development version")
         ]
     )
@@ -523,6 +524,23 @@ class PATBLEND_OT_LinkGit(Operator):
         bpy.ops.wm.url_open(url = "https://github.com/PatBlend/Patblend_Add-on")
         return {'FINISHED'}
 
+class PATBLEND_OT_LinkReleases(Operator):
+    bl_label = "Releases"
+    bl_idname = "patblend.open_git_releases"
+    bl_description = "Opens the GitHub Releases page."
+
+    def execute(self, context):
+        text = CheckText()
+        dateTime = GetDateTime()
+        dateTime = dateTime[0] + " " + dateTime[1]
+
+        text.write(dateTime + "\n")
+        text.write("Opened PatBlend GitHub Releases\n")
+        text.write("______________________________\n\n")
+
+        bpy.ops.wm.url_open(url = "https://github.com/PatBlend/Patblend_Add-on/releases")
+        return {'FINISHED'}
+
 class PATBLEND_OT_LinkSite(Operator):
     bl_label = "Website"
     bl_idname = "patblend.open_site"
@@ -612,12 +630,14 @@ class PATBLEND_OT_DownloadPrevious(Operator):
 
         if version == '1.0.0':
             url = "https://github.com/PatBlend/Patblend_Add-on/archive/v1.0.0.zip"
-        if version == '1.0.1':
+        elif version == '1.0.1':
             url = "https://github.com/PatBlend/Patblend_Add-on/archive/v1.0.1.zip"
-        if version == '1.0.2 Alpha':
+        elif version == '1.0.2 Alpha':
             url = "https://github.com/PatBlend/Patblend_Add-on/archive/v1.0.2-alpha.zip"
-        if version == 'Master':
+        elif version == 'Master':
             url = "https://github.com/PatBlend/Patblend_Add-on/archive/master.zip"
+        elif version == '1.0.2':
+            url = "https://github.com/PatBlend/Patblend_Add-on/archive/v1.0.2.zip"
         
         bpy.ops.wm.url_open(url = "https://github.com/PatBlend/Patblend_Add-on")
         bpy.ops.wm.url_open(url = url)
@@ -654,13 +674,14 @@ class PATBLEND_OT_DownloadAllConfirm(Operator):
     def draw(self, context):
         col = self.layout.column()
         col.scale_y = 1
-        col.label(text = "This will download the following 4 files:")
+        col.label(text = "This will download the following 5 files:")
         col.label(text = "    PatBlend_Add-on-master")
         col.label(text = "    PatBlend_Add-on-v1.0.0")
         col.label(text = "    PatBlend_Add-on-v1.0.1")
         col.label(text = "    PatBlend_Add-on-v1.0.2-alpha")
+        col.label(text = "    PatBlend_Add-on-v1.0.2")
         col.label(text = "")
-        col.label(text = "The combined file size is 80.4 KB")
+        col.label(text = "The combined file size is 107 KB")
 
     def execute(self, context):
         scene = context.scene
@@ -679,6 +700,7 @@ class PATBLEND_OT_DownloadAllConfirm(Operator):
         bpy.ops.wm.url_open(url = "https://github.com/PatBlend/Patblend_Add-on/archive/v1.0.0.zip")
         bpy.ops.wm.url_open(url = "https://github.com/PatBlend/Patblend_Add-on/archive/v1.0.1.zip")
         bpy.ops.wm.url_open(url = "https://github.com/PatBlend/Patblend_Add-on/archive/v1.0.2-alpha.zip")
+        bpy.ops.wm.url_open(url = "https://github.com/PatBlend/Patblend_Add-on/archive/v1.0.2.zip")
         bpy.ops.wm.url_open(url = "https://github.com/PatBlend/Patblend_Add-on/archive/master.zip")
 
         return {'FINISHED'}
@@ -759,7 +781,7 @@ class PATBLEND_OT_RenderSetup(Operator):
             bpy.context.scene.render.use_motion_blur = True
 
         bpy.context.scene.render.resolution_x = prop.outX
-        bpy.context.scene.render.resolution_x = prop.outY
+        bpy.context.scene.render.resolution_y = prop.outY
 
         bpy.context.scene.render.fps = prop.fps
 
@@ -947,6 +969,9 @@ class PATBLEND_PT_SettingsLinks(Panel, bpy.types.Panel):
         row.scale_y = GetSize(theme, 3)
         row.operator("patblend.documentation")
         row.operator("patblend.report_bug")
+        row = col.row(align = True)
+        row.scale_y = GetSize(theme, 3)
+        row.operator("patblend.open_git_releases")
         layout.separator()
 
 class PATBLEND_PT_RenderSetup(Panel, bpy.types.Panel):
@@ -1483,6 +1508,7 @@ classess = (PatBlendProps,        # There is an extra 's' to keep the letter cou
             PATBLEND_OT_UninstallPrompt,
             PATBLEND_OT_Uninstall,
             PATBLEND_OT_LinkGit,
+            PATBLEND_OT_LinkReleases,
             PATBLEND_OT_LinkSite,
             PATBLEND_OT_Documentation,
             PATBLEND_OT_ReportBug,

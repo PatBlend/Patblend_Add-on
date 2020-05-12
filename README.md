@@ -26,7 +26,7 @@ All the options can be found in <i>3D View >> Sidebar ('n') >> PatBlend</i>
   <li>After changing the settings to taste, click the Setup button at the bottom of the subpanel.</li>
 </ol>
 
-<b>Unit Converter</b>
+<b>Unit Manipulator</b>
 <ol>
   <li>Open a new Blender file</li>
   <li>Press "n" to open the 3D Viewport Sidebar.</li>
@@ -58,7 +58,7 @@ All the options can be found in <i>3D View >> Sidebar ('n') >> PatBlend</i>
 <b>Render Setup:</b>
 This add-on has a user friendly interface. It quickly sets up the render engine of your choice. There are simple settings such as Samples, Output size, FPS, and World Color that helps an artist focus on what matters.
 
-<b>Unit Converter:</b>
+<b>Unit Manipulator:</b>
 A quick way to convert between different units. This add-on can convert Length and Time, and even give a brief description of each unit.
 
 <b>Quick Search:</b>
