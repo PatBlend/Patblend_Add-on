@@ -1,5 +1,5 @@
 # Patblend_Add-on
-<i>Last updated for Version 1.0.2 Alpha</i><br>
+<i>Last updated for Version 1.0.2 Alpha</i><br><br>
 A compilation of all the add-ons <b>PatBlend</b> has created. 
 At the time of this writing, the four add-ons that make up this are <b>Render Setup</b>, <b>Unit Converter</b>, <b>Coder-Decoder</b> and <b>Quick Search</b>. 
 All the options can be found in <i>3D View >> Sidebar ('n') >> PatBlend</i>
