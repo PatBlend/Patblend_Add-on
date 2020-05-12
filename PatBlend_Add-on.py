@@ -120,8 +120,8 @@ class PatBlendProps(PropertyGroup):
         name = "Samples",
         description = "How workbench renders the image",
         items = [
-            ('0', "No anti-aliasing", "Bare image"),
-            ('1', "Single Pass anti-aliasing", "Smooths edges"),
+            #('0', "No anti-aliasing", "Bare image"),
+            #('1', "Single Pass anti-aliasing", "Smooths edges"),
             ('2', "5 Samples", "5 Samples"),
             ('3', "8 Samples", "8 Samples"),
             ('4', "11 Samples", "11 Samples"),
@@ -256,6 +256,37 @@ class PatBlendProps(PropertyGroup):
         name = "Non-Zero Decimal Places",
         description = "Amount of non-zero numbers after the decimal point to display.",
         default = 3, min = 0, max = 7
+    )
+
+    timeFunc: EnumProperty(
+        name = "Function",
+        description = "What the time manipulator does",
+        items = [
+            ('0', "Number to standard", "Converts a number of seconds, minutes, or hours into a standard time format."),
+            ('1', "Standard to number", "Converts a standard time format into a number of seconds, minutes, or hours."),
+            #('2', "Time arithmetic", "Adds or subtracts different amounts of time.")
+        ]
+    )
+    
+    timeStandard: StringProperty(
+        name = "Time",
+        description = "Enter time in the format hh:mm:ss.ss"
+    )
+
+    timeNumType: EnumProperty(
+        name = "Unit",
+        description = "What unit the below number is in.",
+        items = [
+            ('0', "Seconds", "Seconds"),
+            ('1', "Minutes", "Minutes"),
+            ('2', "Hours", "Hours")
+        ]
+    )
+
+    timeNum: FloatProperty(
+        name = "Time",
+        description = "Enter a time in the form of a float. The unit is defined above.",
+        default = 12.5, min = 0
     )
 
     # Quick Search
@@ -658,6 +689,9 @@ class PATBLEND_OT_RenderSetup(Operator):
     bl_description = "Setup the render engine according to the settings."
 
     def execute(self, context):
+        scene = context.scene
+        prop = scene.patblend
+        
         text = CheckText()
         dateTime = GetDateTime()
         dateTime = dateTime[0] + " " + dateTime[1]
@@ -666,6 +700,73 @@ class PATBLEND_OT_RenderSetup(Operator):
         text.write("Set up render engines\n")
         text.write("______________________________\n\n")
         
+        if prop.engine == {'0'}:
+            bpy.context.scene.render.engine = 'BLENDER_EEVEE'
+            bpy.context.scene.eevee.taa_render_samples = prop.intSamples
+            bpy.context.scene.eevee.taa_samples = 8192
+            bpy.context.scene.eevee.use_gtao = prop.ao
+            bpy.context.scene.eevee.use_ssr = prop.ssr
+            bpy.context.scene.eevee.use_ssr_refraction = prop.ssr
+            bpy.context.scene.eevee.use_motion_blur = True
+
+            if prop.shadowQual == '0':
+                bpy.context.scene.eevee.shadow_cube_size = '1024'
+                bpy.context.scene.eevee.shadow_cascade_size = '1024'
+                bpy.context.scene.eevee.use_shadow_high_bitdepth = False
+            elif prop.shadowQual == '1':
+                bpy.context.scene.eevee.shadow_cube_size = '2048'
+                bpy.context.scene.eevee.shadow_cascade_size = '2048'
+                bpy.context.scene.eevee.use_shadow_high_bitdepth = True
+            elif prop.shadowQual == '1':
+                bpy.context.scene.eevee.shadow_cube_size = '4096'
+                bpy.context.scene.eevee.shadow_cascade_size = '4096'
+                bpy.context.scene.eevee.use_shadow_high_bitdepth = True
+
+        elif prop.engine == {'1'}:
+            bpy.context.scene.render.engine = 'BLENDER_WORKBENCH'
+            #bpy.context.scene.render_aa = '32'
+            #bpy.context.scene.viewport_aa = '32'
+
+        elif prop.engine == {'2'}:
+            bpy.context.scene.render.engine = 'CYCLES'
+            bpy.context.scene.cycles.aa_samples = prop.intSamples
+            bpy.context.scene.cycles.preview_aa_samples = 8192
+            
+            if prop.cyclesDevice == '0':
+                bpy.context.scene.cycles.device = 'CPU'
+                bpy.context.scene.render.tile_x = 32
+                bpy.context.scene.render.tile_y = 32
+            elif prop.cyclesDevice == '1':
+                bpy.context.scene.cycles.device = 'GPU'
+                bpy.context.scene.render.tile_x = 256
+                bpy.context.scene.render.tile_y = 256
+            bpy.context.scene.cycles.progressive = 'BRANCHED_PATH'
+            bpy.context.scene.cycles.transmission_samples = 3
+
+            minBounce = math.floor(prop.bounces / 1.5)
+            medBounce = prop.bounces
+            maxBounce = math.floor(prop.bounces * 1.5)
+
+            bpy.context.scene.cycles.max_bounces = maxBounce
+            bpy.context.scene.cycles.diffuse_bounces = medBounce
+            bpy.context.scene.cycles.glossy_bounces = medBounce
+            bpy.context.scene.cycles.transparent_max_bounces = maxBounce
+            bpy.context.scene.cycles.transmission_bounces = maxBounce
+            bpy.context.scene.cycles.volume_bounces = minBounce
+
+            bpy.context.scene.cycles.caustics_reflective = prop.caustics
+            bpy.context.scene.cycles.caustics_refractive = prop.caustics
+            bpy.context.scene.render.use_motion_blur = True
+
+        bpy.context.scene.render.resolution_x = prop.outX
+        bpy.context.scene.render.resolution_x = prop.outY
+
+        bpy.context.scene.render.fps = prop.fps
+
+        wrldCol = prop.worldCol
+        bpy.data.worlds["World"].node_tree.nodes["Background"].inputs[0].default_value = (wrldCol[0], wrldCol[1], wrldCol[2], 1)
+        bpy.data.worlds["World"].node_tree.nodes["Background"].inputs[1].default_value = prop.worldStr
+
         return {'FINISHED'}
 
 class PATBLEND_OT_Search(Operator):
@@ -806,6 +907,7 @@ class PATBLEND_PT_SettingsQuick(Panel, bpy.types.Panel):
         row = layout.row()
         row.scale_y = GetSize(theme, 2)
         row.prop(prop, "textInfo")
+        layout.separator()
 
 class PATBLEND_PT_SettingsLinks(Panel, bpy.types.Panel):
     bl_parent_id = "PATBLEND_PT_Settings"
@@ -845,6 +947,7 @@ class PATBLEND_PT_SettingsLinks(Panel, bpy.types.Panel):
         row.scale_y = GetSize(theme, 3)
         row.operator("patblend.documentation")
         row.operator("patblend.report_bug")
+        layout.separator()
 
 class PATBLEND_PT_RenderSetup(Panel, bpy.types.Panel):
     bl_idname = "PATBLEND_PT_RenderSetup"
@@ -861,8 +964,10 @@ class PATBLEND_PT_RenderSetup(Panel, bpy.types.Panel):
             row = layout.row()
             row.scale_y = GetSize(theme, 3)
             row.operator("patblend.render_setup")
+            layout.separator()
         else:
             layout.label(text = "Select exactly one render engine.")
+            layout.separator()
 
 class PATBLEND_PT_RenderEngine(Panel, bpy.types.Panel):
     bl_parent_id = "PATBLEND_PT_RenderSetup"
@@ -884,7 +989,8 @@ class PATBLEND_PT_RenderEngine(Panel, bpy.types.Panel):
             row.scale_y = GetSize(theme, 1)
 
             if engine == {'1'}:
-                row.prop(prop, "workSamples")
+                #row.prop(prop, "workSamples")
+                a = 0
             else:
                 row.prop(prop, "intSamples")
 
@@ -901,11 +1007,13 @@ class PATBLEND_PT_RenderEngine(Panel, bpy.types.Panel):
             elif engine == {'2'}:
                 row.prop(prop, "bounces")
                 row.prop(prop, "caustics")
+            layout.separator()
         else:
             row = layout.row()
             row.scale_y = GetSize(theme, 2)
             row.prop(prop, "engine")
             layout.label(text = "Select exactly one render engine.")
+            layout.separator()
 
 class PATBLEND_PT_OutputSettings(Panel, bpy.types.Panel):
     bl_parent_id = "PATBLEND_PT_RenderSetup"
@@ -922,14 +1030,20 @@ class PATBLEND_PT_OutputSettings(Panel, bpy.types.Panel):
         row.prop(prop, "outX")
         row.prop(prop, "outY")
 
+        layout.separator()
+
         row = layout.row(align = True)
         row.scale_y = GetSize(theme, 1)
         row.prop(prop, "fps")
         
+        layout.separator()
+
         col = layout.column(align = True)
         col.scale_y = GetSize(theme, 1)
         col.prop(prop, "worldCol")
         col.prop(prop, "worldStr")
+
+        layout.separator()
 
 class PATBLEND_PT_Search(Panel, bpy.types.Panel):
     bl_idname = "PATBLEND_PT_Search"
@@ -952,6 +1066,8 @@ class PATBLEND_PT_Search(Panel, bpy.types.Panel):
         row = layout.row()
         row.scale_y = GetSize(theme, 3)
         row.operator("patblend.search")
+
+        layout.separator()
 
 class PATBLEND_PT_Codec(Panel, bpy.types.Panel):
     bl_idname = "PATBLEND_PT_Codec"
@@ -1066,6 +1182,8 @@ class PATBLEND_PT_Codec(Panel, bpy.types.Panel):
         row.scale_y = GetSize(theme, 3)
         row.operator("patblend.create_text")
 
+        layout.separator()
+
 class PATBLEND_PT_UnitMani(Panel, bpy.types.Panel):
     bl_idname = "PATBLEND_PT_UnitMani"
     bl_label = "Unit Manipulator"
@@ -1167,14 +1285,11 @@ class PATBLEND_PT_UnitLength(Panel, bpy.types.Panel):
                 text2 = str(unit2s) + " " + "Miles"
 
 
-
         row = layout.row(align = True)
         row.scale_y = GetSize(theme, 3)
         row.prop(prop, "lengthFunc")
 
         if function in [{'0'}, {'1'}]:
-            
-
             if function == {'0'}:
                 row = layout.row(align = True)
                 row.scale_y = GetSize(theme, 2)
@@ -1237,8 +1352,10 @@ class PATBLEND_PT_UnitLength(Panel, bpy.types.Panel):
                     layout.label(text = "  - 1760 Yards")
                     layout.label(text = "  - 1600 Meters")
                     layout.label(text = "  - Used for measuring speed (mph)")
+            layout.separator()
         else:
             layout.label(text = "Please select exactly one function.")
+            layout.separator()
 
 class PATBLEND_PT_UnitTime(Panel, bpy.types.Panel):
     bl_label = "Time"
@@ -1248,8 +1365,114 @@ class PATBLEND_PT_UnitTime(Panel, bpy.types.Panel):
         layout = self.layout
         scene = context.scene
         prop = scene.patblend
-        
-        layout.label(text = "Will be added later.")
+        theme = prop.sizeTheme
+        function = prop.timeFunc
+
+        row = layout.row(align = True)
+        row.scale_y = GetSize(theme, 3)
+        row.prop(prop, "timeFunc")
+
+        layout.separator()
+
+        if function == '0':
+            unit = prop.timeNumType          # Get number seconds
+            numUnits = prop.timeNum
+            if unit == '0':
+                seconds = numUnits
+            elif unit == '1':
+                seconds = numUnits * 60
+            elif unit == '2':
+                seconds = numUnits * 3600
+
+            hours = math.floor(seconds / 3600) # Get hours
+            seconds -= hours * 3600
+            minutes = math.floor(seconds / 60)  # Get minutes
+            seconds -= minutes * 60
+            seconds = round(seconds, 2)
+
+            if hours < 10:
+                hours = "0" + str(hours)
+            else:
+                hours = str(hours)
+            if minutes < 10:
+                minutes = "0" + str(minutes)
+            else:
+                minutes = str(minutes)
+            if seconds < 10:
+                seconds = "0" + str(seconds)
+            else:
+                seconds = str(seconds)
+
+            text = hours + " : " + minutes + " : " + seconds
+
+            row = layout.row(align = True)
+            row.scale_y = GetSize(theme, 2)
+            row.prop(prop, "timeNumType")
+
+            row = layout.row(align = True)
+            row.scale_y = GetSize(theme, 1)
+            row.prop(prop, "timeNum")
+
+            layout.separator()
+            layout.label(text = text)
+            layout.separator()
+
+        elif function == '1':
+            strTime = prop.timeStandard
+            unit = prop.timeNumType
+
+            if len(strTime) != 11:
+                row = layout.row(align = True)
+                row.scale_y = GetSize(theme, 2)
+                row.prop(prop, "timeStandard")
+
+                row = layout.row(align = True)
+                row.scale_y = GetSize(theme, 2)
+                row.prop(prop, "timeNumType", text = "Out")
+
+                layout.separator()
+                layout.label(text = "Please enter a valid time.")
+                return
+
+            if strTime[2] != ":" or strTime[5] != ":" or strTime[8] != ".":
+                row = layout.row(align = True)
+                row.scale_y = GetSize(theme, 2)
+                row.prop(prop, "timeStandard")
+
+                row = layout.row(align = True)
+                row.scale_y = GetSize(theme, 2)
+                row.prop(prop, "timeNumType", text = "Out")
+
+                layout.separator()
+                layout.label(text = "Please enter a valid time.")
+                return
+
+            numHour = int(strTime[0:2])
+            numMin = int(strTime[3:5])
+            numSec = float(strTime[6:11])
+
+            if unit == '0':
+                finalNum = numSec + numMin * 60 + numHour * 3600
+            elif unit == '1':
+                finalNum = numSec / 60 + numMin + numHour * 60
+            elif unit == '2':
+                finalNum = numSec / 3600 + numMin / 60 + numHour
+
+            row = layout.row(align = True)
+            row.scale_y = GetSize(theme, 2)
+            row.prop(prop, "timeStandard")
+
+            row = layout.row(align = True)
+            row.scale_y = GetSize(theme, 2)
+            row.prop(prop, "timeNumType", text = "Out")
+
+            layout.separator()
+            layout.label(text = str(round(finalNum, 2)))
+            layout.separator()
+
+        elif function == '2':
+            layout.label(text = "will be added later")
+            layout.separator()
 
 
 
