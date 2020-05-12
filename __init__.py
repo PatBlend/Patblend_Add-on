@@ -18,7 +18,7 @@
 
 
 bl_info = {
-    "name":        "PatBlend Add-on Experimental",
+    "name":        "PatBlend Add-on",
     "description": "A compilation of all Add-ons made by PatBlend",
     "author":      "Patrick Huang, PatBlend <https://sites.google.com/view/patblend>",
     "version":     (1, 0, 2),

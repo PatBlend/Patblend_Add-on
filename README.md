@@ -10,7 +10,7 @@ All the options can be found in <i>3D View >> Sidebar ('n') >> PatBlend</i>
   <li>Open Blender. Your Blender version must be 2.8x.</li>
   <li>Go to Edit >> Preferences >> Add-ons</li>
   <li>Click the "Install add-on from file" button <i>Note:</i> If you have an older version already installed, you must uninstall it first.</li>
-  <li>Navigate in the file browser and locate the python file titled "PatBlend_Add-on_vx-x-x</li>
+  <li>Navigate in the file browser and locate the zip file titled "PatBlend_Add-on</li>
   <li>Check the checkbox on the add-on. If you are unable to locate the add-on, simply type "PatBlend" in the search field.</li>
   <li>The add-on is ready to use!</li>
 </ol>
