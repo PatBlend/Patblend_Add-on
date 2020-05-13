@@ -70,7 +70,7 @@ A quick way to convert between different units. This add-on can convert Length a
 Need to search for a reference image or a texture, but only have one monitor? Quick Search helps with that. All you need to do is type in an URL or a keyword and press Search. Blender will automatically decide if you entered an URL or a keyword and open your default browser to provide you with answers.
 
 <b>Coder-Decoder:</b>
-If you need to send a secret message, you can code it with the PatBlend Coder-Decoder. People without this Add-on will be baffled! This add-on supports three codecs at the time of this writing, but more and even a custom codec are going to be added soon.
+If you need to send a secret message, you can code it with the PatBlend Coder-Decoder. People without this Add-on will be baffled! This add-on supports three codecs and a custom codec at the time of this writing, but more are going to be added soon.
 <br>
 <br>
 <a href = "https://forms.gle/rGULhrpfpCta7CWj9">Report a Bug</a>
