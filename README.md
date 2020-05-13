@@ -18,7 +18,7 @@ All the options can be found in <i>3D View >> Sidebar ('n') >> PatBlend</i>
 </ol>
 
 
-<h1>How to use</h1><br>
+<h1>How to use</h1>
 <b>Render Setup</b>
 <ol>
   <li>Open a new Blender file</li>
@@ -73,7 +73,7 @@ If you need to send a secret message, you can code it with the PatBlend Coder-De
 <a href = "https://forms.gle/rGULhrpfpCta7CWj9">Report a Bug</a>
 <br>
 
-<h1>Changelog</h1><br><br>
+<h1>Changelog</h1>
 
 <b>Version 1.0.2</b>
 <ul>
