@@ -70,3 +70,26 @@ If you need to send a secret message, you can code it with the PatBlend Coder-De
 <br>
 <br>
 <a href = "https://forms.gle/rGULhrpfpCta7CWj9">Report a Bug</a>
+<br><br><br>
+<h1>Changelog<h1><br><br>
+
+<b>Version 1.0.2</b>
+<ul>
+  <li>Completely re-written</li>
+  <li>Updated UI for faster working</li>
+  <li>Added Coder-Decoder sub-add-on</li>
+  <li>Unit Manipulator supports time</li>
+</ul><br>
+
+<b>Version 1.0.1</b>
+<ul>
+  <li>Console logging</li>
+  <li>Add-on settings</li>
+  <li>Various bug fixes</li>
+</ul><br>
+
+<b>Version 1.0.0</b>
+<ul>
+  <li>Initial release</li>
+  <li>Contains 3 sub-add-ons: Render Setup, Unit Converter, and Quick Search.</li>
+</ul>
