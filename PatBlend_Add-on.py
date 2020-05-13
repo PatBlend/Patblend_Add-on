@@ -955,29 +955,29 @@ class PATBLEND_PT_SettingsQuick(Panel, bpy.types.Panel):     # Quick Settings pa
         if activated == False:
             return
 
-        row = layout.row(align = True)
+        row = layout.row(align = True)    # Uninstall, Disable
         row.scale_y = GetSize(theme, 4)
         row.operator("patblend.uninstall_prompt", text = "Uninstall")
         row.operator("patblend.disable_prompt", text = "Disable")
 
-        row = layout.row()
+        row = layout.row()                # Github checkbox
         row.scale_y = GetSize(theme, 2)
         row.prop(prop, "openGit")
         
-        row = layout.row()
+        row = layout.row()                # Download Latest checkbox
         row.enabled = prop.openGit
         row.scale_y = GetSize(theme, 2)
         row.prop(prop, "downloadLatest")
 
-        row = layout.row()
+        row = layout.row()                # Size Theme
         row.scale_y = GetSize(theme, 3)
         row.prop(prop, "sizeTheme")
 
-        row = layout.row()
+        row = layout.row()                # Print info in console
         row.scale_y = GetSize(theme, 2)
         row.prop(prop, "consoleInfo")
 
-        row = layout.row()
+        row = layout.row()                # Text logging
         row.scale_y = GetSize(theme, 2)
         row.prop(prop, "textInfo")
         layout.separator()
@@ -996,14 +996,14 @@ class PATBLEND_PT_SettingsLinks(Panel, bpy.types.Panel):     # Links panel
         activated = prop.activated
         if activated == False:
             return
+        
+        layout.label(text = "Download")
 
-        row = layout.row()
+        row = layout.row()           # Choose version
         row.scale_y = GetSize(theme, 2)
         row.prop(prop, "version")
 
-        layout.label(text = "Download")
-
-        col = layout.column(align = True)
+        col = layout.column(align = True)  # Download latest, previous, all
         row = col.row(align = True)
         row.scale_y = GetSize(theme, 4)
         row.operator("patblend.download_latest", text = "Latest")
@@ -1015,7 +1015,7 @@ class PATBLEND_PT_SettingsLinks(Panel, bpy.types.Panel):     # Links panel
         layout.separator()
         layout.label(text = "Web Links")
 
-        col = layout.column(align = True)
+        col = layout.column(align = True)    # All web links
         row = col.row(align = True)
         row.scale_y = GetSize(theme, 3)
         row.operator("patblend.open_git")
@@ -1589,35 +1589,46 @@ class PATBLEND_PT_UnitTime(Panel, bpy.types.Panel):          # Time
 
 
 classess = (PatBlendProps,                                   # There is an extra 's' to keep the letter count a multiple of 4.
-           
-            PATBLEND_OT_Activate,
-            PATBLEND_OT_DisablePrompt,
+            # Properties
+            # Operators
+            PATBLEND_OT_Activate,           # Activate button
+            
+            PATBLEND_OT_DisablePrompt,      # Disable/Uninstall
             PATBLEND_OT_Disable,
             PATBLEND_OT_UninstallPrompt,
             PATBLEND_OT_Uninstall,
-            PATBLEND_OT_LinkGit,
+            
+            PATBLEND_OT_LinkGit,            # Links
             PATBLEND_OT_LinkReleases,
             PATBLEND_OT_LinkSite,
             PATBLEND_OT_Documentation,
             PATBLEND_OT_ReportBug,
-            PATBLEND_OT_DownloadLatest,
+            
+            PATBLEND_OT_DownloadLatest,     # Download
             PATBLEND_OT_DownloadPrevious,
             PATBLEND_OT_DownloadAll,
             PATBLEND_OT_DownloadAllConfirm,
-            PATBLEND_OT_RenderSetup,
-            PATBLEND_OT_CreateText,
             
-            PATBLEND_OT_Search,
+            PATBLEND_OT_RenderSetup,        # Render Setup
+            
+            PATBLEND_OT_CreateText,         # Codec
+            
+            PATBLEND_OT_Search,             # Search
 
-            PATBLEND_PT_Settings,
+            # Panels
+            PATBLEND_PT_Settings,           # Settings
             PATBLEND_PT_SettingsQuick,
             PATBLEND_PT_SettingsLinks,
-            PATBLEND_PT_RenderSetup,
+            
+            PATBLEND_PT_RenderSetup,        # Render Setup
             PATBLEND_PT_RenderEngine,
             PATBLEND_PT_OutputSettings,
-            PATBLEND_PT_Search,
-            PATBLEND_PT_Codec,
-            PATBLEND_PT_UnitMani,
+            
+            PATBLEND_PT_Search,             # Search
+            
+            PATBLEND_PT_Codec,              # Codec
+            
+            PATBLEND_PT_UnitMani,           # Unit Manipulator
             PATBLEND_PT_UnitLength,
             PATBLEND_PT_UnitTime)
 
