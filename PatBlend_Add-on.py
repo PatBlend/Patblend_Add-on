@@ -31,21 +31,21 @@ bl_info = {
 
 
 import bpy, math, time, datetime
-from bpy.props import (StringProperty,      # Import Blender python properties
+from bpy.props import (StringProperty,                       # Import Blender python properties
                        BoolProperty, 
                        IntProperty, 
                        FloatProperty, 
                        FloatVectorProperty, 
                        EnumProperty, 
                        PointerProperty)
-from bpy.types import (Panel,               # Import Blender UI Types
+from bpy.types import (Panel,                                # Import Blender UI Types
                        Menu, 
                        Operator, 
                        PropertyGroup)
 
 
 ########## Other Functions ##########
-def GetSize(theme, type):   # This function calculates the sizes for Size Theme.
+def GetSize(theme, type):                                    # This function calculates the sizes for Size Theme.
     if theme == '0':
         return 1
     elif theme == '1':
@@ -72,13 +72,13 @@ def GetSize(theme, type):   # This function calculates the sizes for Size Theme.
     elif theme == '4':
         return type * 1.5 + 0.5
 
-def GetDateTime():          # Gets Date and Time from datetime module and converts it into a list of strings.
+def GetDateTime():                                           # Gets Date and Time from datetime module and converts it into a list of strings.
     raw = str(datetime.datetime.now())
     date = raw[0:10]
     time = raw[11:19]
     return [date, time]
 
-def CheckText():            # Checks if there is a PatBlend logging text. If not, creates one.
+def CheckText():                                             # Checks if there is a PatBlend logging text. If not, creates one.
     if "PatBlend_Logging" in bpy.data.texts:
         PatText = bpy.data.texts['PatBlend_Logging']
     else:
@@ -385,7 +385,7 @@ class PatBlendProps(PropertyGroup):
 
 
 ########## Operators ##########
-class PATBLEND_OT_Activate(Operator):            # Activates the Add-on
+class PATBLEND_OT_Activate(Operator):                        # Activates the Add-on
     bl_label = "Activate Add-on"
     bl_idname = "patblend.activate"
     bl_description = "Activates the Add-on"
@@ -397,7 +397,7 @@ class PATBLEND_OT_Activate(Operator):            # Activates the Add-on
         prop.activated = True
         return {'FINISHED'}
 
-class PATBLEND_OT_DisablePrompt(Operator):       # Prompts a pop-up to disable the Add-on
+class PATBLEND_OT_DisablePrompt(Operator):                   # Prompts a pop-up to disable the Add-on
     bl_label = "Disable Add-on"
     bl_idname = "patblend.disable_prompt"
     bl_description = "Unchecks the checkbox in User Preferences."
@@ -420,7 +420,7 @@ class PATBLEND_OT_DisablePrompt(Operator):       # Prompts a pop-up to disable t
         
         return {'FINISHED'}
 
-class PATBLEND_OT_Disable(Operator):             # Disables Add-on
+class PATBLEND_OT_Disable(Operator):                         # Disables Add-on
     bl_label = "Are you sure?"
     bl_idname = "patblend.disable_warning"
 
@@ -449,7 +449,7 @@ class PATBLEND_OT_Disable(Operator):             # Disables Add-on
         bpy.ops.preferences.addon_disable(module = "PatBlend_Add-on")
         return {'FINISHED'}
 
-class PATBLEND_OT_UninstallPrompt(Operator):     # Prompts a pop-up to uninstall the Add-on
+class PATBLEND_OT_UninstallPrompt(Operator):                 # Prompts a pop-up to uninstall the Add-on
     bl_label = "Uninstall Add-on"
     bl_idname = "patblend.uninstall_prompt"
     bl_description = "Removes the Add-on from the system."
@@ -472,7 +472,7 @@ class PATBLEND_OT_UninstallPrompt(Operator):     # Prompts a pop-up to uninstall
 
         return {'FINISHED'}
 
-class PATBLEND_OT_Uninstall(Operator):           # Uninstalls Add-on
+class PATBLEND_OT_Uninstall(Operator):                       # Uninstalls Add-on
     bl_label = "Are you sure?"
     bl_idname = "patblend.uninstall_warning"
 
@@ -522,7 +522,7 @@ class PATBLEND_OT_Uninstall(Operator):           # Uninstalls Add-on
         time.sleep(0.15)
         return {'FINISHED'}
 
-class PATBLEND_OT_LinkGit(Operator):             # Opens PatBlend GitHub
+class PATBLEND_OT_LinkGit(Operator):                         # Opens PatBlend GitHub
     bl_label = "GitHub"
     bl_idname = "patblend.open_git"
     bl_description = "Opens the PatBlend GitHub."
@@ -543,7 +543,7 @@ class PATBLEND_OT_LinkGit(Operator):             # Opens PatBlend GitHub
         bpy.ops.wm.url_open(url = "https://github.com/PatBlend/Patblend_Add-on")
         return {'FINISHED'}
 
-class PATBLEND_OT_LinkReleases(Operator):        # Opens Releases page in GitHub
+class PATBLEND_OT_LinkReleases(Operator):                    # Opens Releases page in GitHub
     bl_label = "Releases"
     bl_idname = "patblend.open_git_releases"
     bl_description = "Opens the GitHub Releases page."
@@ -564,7 +564,7 @@ class PATBLEND_OT_LinkReleases(Operator):        # Opens Releases page in GitHub
         bpy.ops.wm.url_open(url = "https://github.com/PatBlend/Patblend_Add-on/releases")
         return {'FINISHED'}
 
-class PATBLEND_OT_LinkSite(Operator):            # Opens PatBlend Website
+class PATBLEND_OT_LinkSite(Operator):                        # Opens PatBlend Website
     bl_label = "Website" 
     bl_idname = "patblend.open_site"
     bl_description = "Opens the PatBlend Website."
@@ -585,7 +585,7 @@ class PATBLEND_OT_LinkSite(Operator):            # Opens PatBlend Website
         bpy.ops.wm.url_open(url = "https://sites.google.com/view/patblend")
         return {'FINISHED'}
 
-class PATBLEND_OT_Documentation(Operator):       # Opens documentation document
+class PATBLEND_OT_Documentation(Operator):                   # Opens documentation document
     bl_label = "Documentation"
     bl_idname = "patblend.documentation"
     bl_description = "Opens a document with documentation"
@@ -606,7 +606,7 @@ class PATBLEND_OT_Documentation(Operator):       # Opens documentation document
         bpy.ops.wm.url_open(url = "https://docs.google.com/document/d/1XOM4b5h3V0qt4dcGYBnKsm38zUuzH1tuJu2kfg3YACA/edit")
         return {'FINISHED'}
 
-class PATBLEND_OT_ReportBug(Operator):           # Opens Report a Bug form
+class PATBLEND_OT_ReportBug(Operator):                       # Opens Report a Bug form
     bl_label = "Report a Bug"
     bl_idname = "patblend.report_bug"
     bl_description = "Goes to the page to report a bug."
@@ -627,7 +627,7 @@ class PATBLEND_OT_ReportBug(Operator):           # Opens Report a Bug form
         bpy.ops.wm.url_open(url = "https://forms.gle/rGULhrpfpCta7CWj9")
         return {'FINISHED'}
 
-class PATBLEND_OT_DownloadLatest(Operator):      # Downloads the master branch
+class PATBLEND_OT_DownloadLatest(Operator):                  # Downloads the master branch
     bl_label = "Download Latest Version"
     bl_idname = "patblend.download_latest"
     bl_description = "Downloads the master branch in GitHub."
@@ -649,7 +649,7 @@ class PATBLEND_OT_DownloadLatest(Operator):      # Downloads the master branch
         bpy.ops.wm.url_open(url = "https://github.com/PatBlend/Patblend_Add-on/archive/master.zip")
         return {'FINISHED'}
 
-class PATBLEND_OT_DownloadPrevious(Operator):    # Downloads a previous version of the Add-on
+class PATBLEND_OT_DownloadPrevious(Operator):                # Downloads a previous version of the Add-on
     bl_label = "Download Previous Version"
     bl_idname = "patblend.download_previous"
     bl_description = "Downloads the selected version."
@@ -684,7 +684,7 @@ class PATBLEND_OT_DownloadPrevious(Operator):    # Downloads a previous version 
         bpy.ops.wm.url_open(url = url)
         return {'FINISHED'}
 
-class PATBLEND_OT_DownloadAll(Operator):         # Downloads all versions of the Add-on
+class PATBLEND_OT_DownloadAll(Operator):                     # Downloads all versions of the Add-on
     bl_label = "Download All!"
     bl_idname = "patblend.download_all"
     bl_description = "Downloads all versions including previous versions and the current version."
@@ -707,7 +707,7 @@ class PATBLEND_OT_DownloadAll(Operator):         # Downloads all versions of the
 
         return {'FINISHED'}
 
-class PATBLEND_OT_DownloadAllConfirm(Operator):  # Confirms Download all
+class PATBLEND_OT_DownloadAllConfirm(Operator):              # Confirms Download all
     bl_label = "Are you sure?"
     bl_idname = "patblend.download_all_confirm"
 
@@ -750,7 +750,7 @@ class PATBLEND_OT_DownloadAllConfirm(Operator):  # Confirms Download all
 
         return {'FINISHED'}
 
-class PATBLEND_OT_RenderSetup(Operator):         # Operator for Render Setup
+class PATBLEND_OT_RenderSetup(Operator):                     # Operator for Render Setup
     bl_label = "Setup"
     bl_idname = "patblend.render_setup"
     bl_description = "Setup the render engine according to the settings."
@@ -838,7 +838,7 @@ class PATBLEND_OT_RenderSetup(Operator):         # Operator for Render Setup
 
         return {'FINISHED'}
 
-class PATBLEND_OT_Search(Operator):              # Operator for Quick Search
+class PATBLEND_OT_Search(Operator):                          # Operator for Quick Search
     bl_label = "Search"
     bl_idname = "patblend.search"
     bl_description = "Searches whatever is in the address box."
@@ -885,7 +885,7 @@ class PATBLEND_OT_Search(Operator):              # Operator for Quick Search
 
         return {'FINISHED'}
 
-class PATBLEND_OT_CreateText(Operator):          # Creates text for the Codec
+class PATBLEND_OT_CreateText(Operator):                      # Creates text for the Codec
     bl_label = "Create Text"
     bl_description = "Creates a text datablock with the code."
     bl_idname = "patblend.create_text"
@@ -1588,7 +1588,7 @@ class PATBLEND_PT_UnitTime(Panel, bpy.types.Panel):          # Time
 
 
 
-classess = (PatBlendProps,    # There is an extra 's' to keep the letter count a multiple of 4.
+classess = (PatBlendProps,                                   # There is an extra 's' to keep the letter count a multiple of 4.
            
             PATBLEND_OT_Activate,
             PATBLEND_OT_DisablePrompt,
@@ -1621,17 +1621,17 @@ classess = (PatBlendProps,    # There is an extra 's' to keep the letter count a
             PATBLEND_PT_UnitLength,
             PATBLEND_PT_UnitTime)
 
-def register():               # Runs each class
+def register():                                              # Runs each class
     from bpy.utils import register_class
     for cls in classess:
         register_class(cls)
     bpy.types.Scene.patblend = PointerProperty(type = PatBlendProps)
     
-def unregister():             # Unruns each class
+def unregister():                                            # Unruns each class
     from bpy.utils import unregister_class
     for cls in reversed(classess):
         unregister_class(cls)
     del bpy.types.Scene.patblend
     
-if __name__ == "__main__":    # Calls Register
+if __name__ == "__main__":                                   # Calls Register
     register()
