@@ -46,21 +46,21 @@ from bpy.types import (Panel,                                # Import Blender UI
 
 ########## Other Functions ##########
 def GetSize(theme, type):                                    # This function calculates the sizes for Size Theme.
-    if theme == '0':
+    if theme == '0':       # (1, 1, 1, 1)
         return 1
-    elif theme == '1':
+    elif theme == '1':     # (1, 1, 1, 1.5)
         if type == 4:
             return 1.5
         else:
             return 1
-    elif theme == '2':
+    elif theme == '2':     # (1, 1, 1.5, 2)
         if type == 4:
             return 2
         elif type == 3:
             return 1.5
         else:
             return 1
-    elif theme == '3':
+    elif theme == '3':     # (1, 1.5, 2.5, 3.5)
         if type == 1:
             return 1
         elif type == 2:
@@ -69,20 +69,20 @@ def GetSize(theme, type):                                    # This function cal
             return 2.5
         elif type == 4:
             return 3.5
-    elif theme == '4':
+    elif theme == '4':     # (2, 3.5, 5, 6.5)
         return type * 1.5 + 0.5
 
 def GetDateTime():                                           # Gets Date and Time from datetime module and converts it into a list of strings.
-    raw = str(datetime.datetime.now())
-    date = raw[0:10]
-    time = raw[11:19]
+    raw = str(datetime.datetime.now())  # yyyy-mm-dd hh:mm:ss.ssssss
+    date = raw[0:10]                    # Gets yyyy-mm-dd
+    time = raw[11:19]                   # Gets hh:mm:ss.ss
     return [date, time]
 
 def CheckText():                                             # Checks if there is a PatBlend logging text. If not, creates one.
     if "PatBlend_Logging" in bpy.data.texts:
-        PatText = bpy.data.texts['PatBlend_Logging']
+        PatText = bpy.data.texts['PatBlend_Logging']     # Creates new text
     else:
-        PatText = bpy.data.texts.new("PatBlend_Logging")
+        PatText = bpy.data.texts.new("PatBlend_Logging") # Sets "PatText" as the text
     return PatText
 
 
