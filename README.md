@@ -1,12 +1,13 @@
 # Patblend_Add-on
 <i>Last updated for Version 1.0.2</i><br><br>
-<b>Note: </b>There are two Python files included: __init__ and PatBlend_Add-on. The __init__ is used for .zip file installing (customer use), while the other file is used for python file installing (developer use).
+<b>Note: </b>There are two Python files included: __init__ and PatBlend_Add-on. The __init__ is used for .zip file installing (customer use), while the other file is used for python file installing (developer use).<br><br>
+
 A compilation of all the add-ons <b>PatBlend</b> has created. 
 At the time of this writing, the four add-ons that make up this are <b>Render Setup</b>, <b>Unit Converter</b>, <b>Coder-Decoder</b> and <b>Quick Search</b>. 
 All the options can be found in <i>3D View >> Sidebar ('n') >> PatBlend</i>
 
 
-<b>How to install:</b>
+<h1>How to install</h1>
 <ol>
   <li>Open Blender. Your Blender version must be 2.8x.</li>
   <li>Go to Edit >> Preferences >> Add-ons</li>
@@ -17,7 +18,7 @@ All the options can be found in <i>3D View >> Sidebar ('n') >> PatBlend</i>
 </ol>
 
 
-<b><u>How to use:</u></b><br>
+<h1>How to use</h1><br>
 <b>Render Setup</b>
 <ol>
   <li>Open a new Blender file</li>
@@ -54,7 +55,7 @@ All the options can be found in <i>3D View >> Sidebar ('n') >> PatBlend</i>
   <li>Press the "Create Text" button to create a text datablock so you don't have to copy each character by hand.<li>
 </ol>
 
-<b>A brief description of each sub-add-on:</b>
+<h1>Description</h1>
 
 <b>Render Setup:</b>
 This add-on has a user friendly interface. It quickly sets up the render engine of your choice. There are simple settings such as Samples, Output size, FPS, and World Color that helps an artist focus on what matters.
@@ -71,7 +72,8 @@ If you need to send a secret message, you can code it with the PatBlend Coder-De
 <br>
 <a href = "https://forms.gle/rGULhrpfpCta7CWj9">Report a Bug</a>
 <br><br><br>
-<h1>Changelog<h1><br><br>
+
+<h1>Changelog</h1><br><br>
 
 <b>Version 1.0.2</b>
 <ul>
