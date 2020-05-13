@@ -20,7 +20,7 @@ All the options can be found in <i>3D View >> Sidebar ('n') >> PatBlend</i>
 
 <h1>How to use</h1>
 <b>Important:</b><br>
-Before you start using the Add-on, you need to Activate it. To activate it, simply click the "Activate Add-on" button in the Settings panel.<br>
+Before you start using the Add-on, you need to Activate it. To activate it, simply click the "Activate Add-on" button in the Settings panel.<br><br>
 
 <b>Render Setup</b>
 <ol>
