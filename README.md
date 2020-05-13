@@ -1,6 +1,6 @@
 # Patblend_Add-on
 <i>Last updated for Version 1.0.2</i><br><br>
-<b>Note: </b>There are two Python files included: __init__ and PatBlend_Add-on. The __init__ is used for .zip file installing (customer use), while the other file is used for python file installing (developer use).<br><br>
+<b>Note: </b>There are two Python files included: __init__ and PatBlend_Add-on. The __init__ is used for .zip file installing (customer use), while the other file is used for python file installing (developer use).<br>
 
 A compilation of all the add-ons <b>PatBlend</b> has created. 
 At the time of this writing, the four add-ons that make up this are <b>Render Setup</b>, <b>Unit Converter</b>, <b>Coder-Decoder</b> and <b>Quick Search</b>. 
@@ -64,14 +64,14 @@ This add-on has a user friendly interface. It quickly sets up the render engine 
 A quick way to convert between different units. This add-on can convert Length and Time, and even give a brief description of each unit.
 
 <b>Quick Search:</b>
-Need to search for a reference image or a texture, but only have one monitor? Quick Search helps with that. All you need to do is type in an URL or a keyword and press Search. Blender will automatically open your default browser and provide you with answers.
+Need to search for a reference image or a texture, but only have one monitor? Quick Search helps with that. All you need to do is type in an URL or a keyword and press Search. Blender will automatically decide if you entered an URL or a keyword and open your default browser to provide you with answers.
 
 <b>Coder-Decoder:</b>
-If you need to send a secret message, you can code it with the PatBlend Coder-Decoder. People without this Add-on will be baffled!
+If you need to send a secret message, you can code it with the PatBlend Coder-Decoder. People without this Add-on will be baffled! This add-on supports three codecs at the time of this writing, but more and even a custom codec are going to be added soon.
 <br>
 <br>
 <a href = "https://forms.gle/rGULhrpfpCta7CWj9">Report a Bug</a>
-<br><br><br>
+<br>
 
 <h1>Changelog</h1><br><br>
 
