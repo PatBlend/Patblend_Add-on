@@ -368,8 +368,15 @@ class PatBlendProps(PropertyGroup):
         items = [
             ('0', "PatBlend 1", "PatBlend codec number 1"),
             ('1', "PatBlend 2", "PatBlend codec number 2"),
-            ('2', "PatBlend 3", "PatBlend codec number 3")
+            ('2', "PatBlend 3", "PatBlend codec number 3"),
+            ('3', "Custom", "Choose custom code offset.")
         ]
+    )
+
+    custCodeOffset: IntProperty(
+        name = "Ascii Offset",
+        description = "Amount of offset to do for the Ascii. Uncommon number is recommended.",
+        default = 0, min = 0, max = 94
     )
 
     codeIn: StringProperty(
@@ -1242,14 +1249,34 @@ class PATBLEND_PT_Codec(Panel, bpy.types.Panel):             # Codec
                 output += char
             return output
 
+        def PatCodecCust(decode, input, offset):
+            output = ""
+            for i in range(len(input)):
+                char = input[i]
+                char = GetPos(char)
+                if decode == True:
+                    char = (char - offset) % len(PatAscii)
+                else:
+                    char = (char + offset) % len(PatAscii)
+                char = PatAscii[char]
+                output += char
+            return output
+
         decode = prop.function == {'1'}
         input = prop.codeIn
         if codeType == '0':
             coded = PatCodec1(decode, input)
+        
         elif codeType == '1':
             coded = PatCodec2(decode, input)
+        
         elif codeType == '2':
             coded = PatCodec3(decode, input)
+        
+        elif codeType == '3':
+            offset =  prop.custCodeOffset
+            coded = PatCodecCust(decode, input, offset)
+        
         global PatBlendCodecCoded
         PatBlendCodecCoded = coded
 
@@ -1268,6 +1295,11 @@ class PATBLEND_PT_Codec(Panel, bpy.types.Panel):             # Codec
         row.scale_y = GetSize(theme, 2)
         row.prop(prop, "codeType")
         
+        if codeType == '3':
+            row = layout.row()
+            row.scale_y = GetSize(theme, 1)
+            row.prop(prop, "custCodeOffset")
+
         row = layout.row()
         row.scale_y = GetSize(theme, 2)
         row.prop(prop, "codeIn")
