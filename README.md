@@ -68,4 +68,5 @@ Need to search for a reference image or a texture, but only have one monitor? Qu
 <b>Coder-Decoder:</b>
 If you need to send a secret message, you can code it with the PatBlend Coder-Decoder. People without this Add-on will be baffled!
 <br>
+<br>
 <a href = "https://forms.gle/rGULhrpfpCta7CWj9">Report a Bug</a>
