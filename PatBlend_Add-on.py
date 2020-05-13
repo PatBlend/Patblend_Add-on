@@ -81,8 +81,10 @@ def GetDateTime():                                           # Gets Date and Tim
 def CheckText():                                             # Checks if there is a PatBlend logging text. If not, creates one.
     if "PatBlend_Logging" in bpy.data.texts:
         PatText = bpy.data.texts['PatBlend_Logging']     # Creates new text
+        PatText.cursor_set(1234567890, character = 1234567890)
     else:
         PatText = bpy.data.texts.new("PatBlend_Logging") # Sets "PatText" as the text
+        PatText.cursor_set(1234567890, character = 1234567890)
     return PatText
 
 
@@ -376,7 +378,7 @@ class PatBlendProps(PropertyGroup):
     custCodeOffset: IntProperty(
         name = "Ascii Offset",
         description = "Amount of offset to do for the Ascii. Uncommon number is recommended.",
-        default = 0, min = 0, max = 94
+        default = 0, min = -94, max = 94
     )
 
     codeIn: StringProperty(
@@ -915,8 +917,10 @@ class PATBLEND_OT_CreateText(Operator):                      # Creates text for 
         dateTime = GetDateTime()
         if "PatBlend_Add-on_Coder" in bpy.data.texts:
             newText = bpy.data.texts["PatBlend_Add-on_Coder"]
+            newText.cursor_set(1234567890, character = 1234567890)
         else:
             newText = bpy.data.texts.new("PatBlend_Add-on_Coder")
+            newText.cursor_set(1234567890, character = 1234567890)
         
         if dts:
             newText.write("Created on " + dateTime[0] + ", " + dateTime[1] + "\n\n")
