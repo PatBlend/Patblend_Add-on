@@ -81,14 +81,14 @@ If you need to send a secret message, you can code it with the PatBlend Coder-De
   <li>Updated UI for faster working</li>
   <li>Added Coder-Decoder sub-add-on</li>
   <li>Unit Manipulator supports time</li>
-</ul><br>
+</ul>
 
 <b>Version 1.0.1</b>
 <ul>
   <li>Console logging</li>
   <li>Add-on settings</li>
   <li>Various bug fixes</li>
-</ul><br>
+</ul>
 
 <b>Version 1.0.0</b>
 <ul>
