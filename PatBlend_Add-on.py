@@ -18,16 +18,16 @@
 
 
 bl_info = {
-    "name":        "PatBlend Add-on",
-    "description": "A compilation of all Add-ons made by PatBlend",
-    "author":      "Patrick Huang",
-    "version":     (1, 0, 2),
-    "blender":     (2, 80, 0),
-    "location":    "3D View >> Sidebar >> PatBlend",
-    "warning":     "",
-    "wiki_url":    "https://github.com/PatBlend/Patblend_Add-on",
-    "tracker_url": "https://docs.google.com/forms/d/e/1FAIpQLScJGRE0jJu17OvDQ5o-BK56fIaUuzbP086LXhQdzMB_ySBbrw/viewform?usp=sf_link",
-    "category":    "PatBlend"}
+    "name":        "PatBlend Add-on",                                 # Name of the Add-on
+    "description": "A compilation of all Add-ons made by PatBlend",   # Description of the Add-on
+    "author":      "Patrick Huang",                                   # Author(s)
+    "version":     (1, 0, 2),                                         # Current Version
+    "blender":     (2, 80, 0),                                        # Minimum Blender version required to run
+    "location":    "3D View >> Sidebar >> PatBlend",                  # Where to find the content of the Add-on
+    "warning":     "",                                                # Warning icon in Preferences
+    "wiki_url":    "https://github.com/PatBlend/Patblend_Add-on",     # Documentation link
+    "tracker_url": "https://forms.gle/rGULhrpfpCta7CWj9",             # Report a Bug link
+    "category":    "PatBlend"}                                        # Category of the Add-on
 
 
 import bpy, math, time, datetime
@@ -37,18 +37,15 @@ from bpy.props import (StringProperty,      # Import Blender python properties
                        FloatProperty, 
                        FloatVectorProperty, 
                        EnumProperty, 
-                       PointerProperty
-                       )
+                       PointerProperty)
 from bpy.types import (Panel,               # Import Blender UI Types
                        Menu, 
                        Operator, 
-                       PropertyGroup
-                       )
-activated = False
+                       PropertyGroup)
 
 
 ########## Other Functions ##########
-def GetSize(theme, type):
+def GetSize(theme, type):   # This function calculates the sizes for Size Theme.
     if theme == '0':
         return 1
     elif theme == '1':
@@ -75,13 +72,13 @@ def GetSize(theme, type):
     elif theme == '4':
         return type * 1.5 + 0.5
 
-def GetDateTime():
+def GetDateTime():          # Gets Date and Time from datetime module and converts it into a list of strings.
     raw = str(datetime.datetime.now())
     date = raw[0:10]
     time = raw[11:19]
     return [date, time]
 
-def CheckText():
+def CheckText():            # Checks if there is a PatBlend logging text. If not, creates one.
     if "PatBlend_Logging" in bpy.data.texts:
         PatText = bpy.data.texts['PatBlend_Logging']
     else:
@@ -388,7 +385,7 @@ class PatBlendProps(PropertyGroup):
 
 
 ########## Operators ##########
-class PATBLEND_OT_Activate(Operator):
+class PATBLEND_OT_Activate(Operator):            # Activates the Add-on
     bl_label = "Activate Add-on"
     bl_idname = "patblend.activate"
     bl_description = "Activates the Add-on"
@@ -400,7 +397,7 @@ class PATBLEND_OT_Activate(Operator):
         prop.activated = True
         return {'FINISHED'}
 
-class PATBLEND_OT_DisablePrompt(Operator):
+class PATBLEND_OT_DisablePrompt(Operator):       # Prompts a pop-up to disable the Add-on
     bl_label = "Disable Add-on"
     bl_idname = "patblend.disable_prompt"
     bl_description = "Unchecks the checkbox in User Preferences."
@@ -423,7 +420,7 @@ class PATBLEND_OT_DisablePrompt(Operator):
         
         return {'FINISHED'}
 
-class PATBLEND_OT_Disable(Operator):
+class PATBLEND_OT_Disable(Operator):             # Disables Add-on
     bl_label = "Are you sure?"
     bl_idname = "patblend.disable_warning"
 
@@ -437,6 +434,7 @@ class PATBLEND_OT_Disable(Operator):
         col.label(text = "You can find it in preferences by searching \"PatBlend\".")
 
     def execute(self, context):
+        scene = context.scene
         prop = scene.patblend
         text = CheckText()
         dateTime = GetDateTime()
@@ -451,7 +449,7 @@ class PATBLEND_OT_Disable(Operator):
         bpy.ops.preferences.addon_disable(module = "PatBlend_Add-on")
         return {'FINISHED'}
 
-class PATBLEND_OT_UninstallPrompt(Operator):
+class PATBLEND_OT_UninstallPrompt(Operator):     # Prompts a pop-up to uninstall the Add-on
     bl_label = "Uninstall Add-on"
     bl_idname = "patblend.uninstall_prompt"
     bl_description = "Removes the Add-on from the system."
@@ -474,7 +472,7 @@ class PATBLEND_OT_UninstallPrompt(Operator):
 
         return {'FINISHED'}
 
-class PATBLEND_OT_Uninstall(Operator):
+class PATBLEND_OT_Uninstall(Operator):           # Uninstalls Add-on
     bl_label = "Are you sure?"
     bl_idname = "patblend.uninstall_warning"
 
@@ -524,12 +522,13 @@ class PATBLEND_OT_Uninstall(Operator):
         time.sleep(0.15)
         return {'FINISHED'}
 
-class PATBLEND_OT_LinkGit(Operator):
+class PATBLEND_OT_LinkGit(Operator):             # Opens PatBlend GitHub
     bl_label = "GitHub"
     bl_idname = "patblend.open_git"
     bl_description = "Opens the PatBlend GitHub."
 
     def execute(self, context):
+        scene = context.scene
         prop = scene.patblend
         text = CheckText()
         dateTime = GetDateTime()
@@ -544,12 +543,13 @@ class PATBLEND_OT_LinkGit(Operator):
         bpy.ops.wm.url_open(url = "https://github.com/PatBlend/Patblend_Add-on")
         return {'FINISHED'}
 
-class PATBLEND_OT_LinkReleases(Operator):
+class PATBLEND_OT_LinkReleases(Operator):        # Opens Releases page in GitHub
     bl_label = "Releases"
     bl_idname = "patblend.open_git_releases"
     bl_description = "Opens the GitHub Releases page."
 
     def execute(self, context):
+        scene = context.scene
         prop = scene.patblend
         text = CheckText()
         dateTime = GetDateTime()
@@ -564,12 +564,13 @@ class PATBLEND_OT_LinkReleases(Operator):
         bpy.ops.wm.url_open(url = "https://github.com/PatBlend/Patblend_Add-on/releases")
         return {'FINISHED'}
 
-class PATBLEND_OT_LinkSite(Operator):
-    bl_label = "Website"
+class PATBLEND_OT_LinkSite(Operator):            # Opens PatBlend Website
+    bl_label = "Website" 
     bl_idname = "patblend.open_site"
     bl_description = "Opens the PatBlend Website."
 
     def execute(self, context):
+        scene = context.scene
         prop = scene.patblend
         text = CheckText()
         dateTime = GetDateTime()
@@ -584,12 +585,13 @@ class PATBLEND_OT_LinkSite(Operator):
         bpy.ops.wm.url_open(url = "https://sites.google.com/view/patblend")
         return {'FINISHED'}
 
-class PATBLEND_OT_Documentation(Operator):
+class PATBLEND_OT_Documentation(Operator):       # Opens documentation document
     bl_label = "Documentation"
     bl_idname = "patblend.documentation"
     bl_description = "Opens a document with documentation"
 
     def execute(self, context):
+        scene = context.scene
         prop = scene.patblend
         text = CheckText()
         dateTime = GetDateTime()
@@ -604,12 +606,13 @@ class PATBLEND_OT_Documentation(Operator):
         bpy.ops.wm.url_open(url = "https://docs.google.com/document/d/1XOM4b5h3V0qt4dcGYBnKsm38zUuzH1tuJu2kfg3YACA/edit")
         return {'FINISHED'}
 
-class PATBLEND_OT_ReportBug(Operator):
+class PATBLEND_OT_ReportBug(Operator):           # Opens Report a Bug form
     bl_label = "Report a Bug"
     bl_idname = "patblend.report_bug"
     bl_description = "Goes to the page to report a bug."
 
     def execute(self, context):
+        scene = context.scene
         prop = scene.patblend
         text = CheckText()
         dateTime = GetDateTime()
@@ -621,15 +624,16 @@ class PATBLEND_OT_ReportBug(Operator):
             text.write("Opened Report a Bug Form\n")
             text.write("______________________________\n\n")
         
-        bpy.ops.wm.url_open(url = "https://docs.google.com/forms/d/e/1FAIpQLScJGRE0jJu17OvDQ5o-BK56fIaUuzbP086LXhQdzMB_ySBbrw/viewform?usp=sf_link")
+        bpy.ops.wm.url_open(url = "https://forms.gle/rGULhrpfpCta7CWj9")
         return {'FINISHED'}
 
-class PATBLEND_OT_DownloadLatest(Operator):
+class PATBLEND_OT_DownloadLatest(Operator):      # Downloads the master branch
     bl_label = "Download Latest Version"
     bl_idname = "patblend.download_latest"
     bl_description = "Downloads the master branch in GitHub."
 
     def execute(self, context):
+        scene = context.scene
         prop = scene.patblend
         text = CheckText()
         dateTime = GetDateTime()
@@ -645,7 +649,7 @@ class PATBLEND_OT_DownloadLatest(Operator):
         bpy.ops.wm.url_open(url = "https://github.com/PatBlend/Patblend_Add-on/archive/master.zip")
         return {'FINISHED'}
 
-class PATBLEND_OT_DownloadPrevious(Operator):
+class PATBLEND_OT_DownloadPrevious(Operator):    # Downloads a previous version of the Add-on
     bl_label = "Download Previous Version"
     bl_idname = "patblend.download_previous"
     bl_description = "Downloads the selected version."
@@ -680,7 +684,7 @@ class PATBLEND_OT_DownloadPrevious(Operator):
         bpy.ops.wm.url_open(url = url)
         return {'FINISHED'}
 
-class PATBLEND_OT_DownloadAll(Operator):
+class PATBLEND_OT_DownloadAll(Operator):         # Downloads all versions of the Add-on
     bl_label = "Download All!"
     bl_idname = "patblend.download_all"
     bl_description = "Downloads all versions including previous versions and the current version."
@@ -703,7 +707,7 @@ class PATBLEND_OT_DownloadAll(Operator):
 
         return {'FINISHED'}
 
-class PATBLEND_OT_DownloadAllConfirm(Operator):
+class PATBLEND_OT_DownloadAllConfirm(Operator):  # Confirms Download all
     bl_label = "Are you sure?"
     bl_idname = "patblend.download_all_confirm"
 
@@ -746,7 +750,7 @@ class PATBLEND_OT_DownloadAllConfirm(Operator):
 
         return {'FINISHED'}
 
-class PATBLEND_OT_RenderSetup(Operator):
+class PATBLEND_OT_RenderSetup(Operator):         # Operator for Render Setup
     bl_label = "Setup"
     bl_idname = "patblend.render_setup"
     bl_description = "Setup the render engine according to the settings."
@@ -834,7 +838,7 @@ class PATBLEND_OT_RenderSetup(Operator):
 
         return {'FINISHED'}
 
-class PATBLEND_OT_Search(Operator):
+class PATBLEND_OT_Search(Operator):              # Operator for Quick Search
     bl_label = "Search"
     bl_idname = "patblend.search"
     bl_description = "Searches whatever is in the address box."
@@ -881,7 +885,7 @@ class PATBLEND_OT_Search(Operator):
 
         return {'FINISHED'}
 
-class PATBLEND_OT_CreateText(Operator):
+class PATBLEND_OT_CreateText(Operator):          # Creates text for the Codec
     bl_label = "Create Text"
     bl_description = "Creates a text datablock with the code."
     bl_idname = "patblend.create_text"
@@ -916,13 +920,13 @@ class PATBLEND_OT_CreateText(Operator):
 
 
 ########## Panels ##########
-class Panel:
+class Panel:                                                 # Base panel that shows up in Sidebar
     bl_space_type = "VIEW_3D"
     bl_region_type = "UI"
     bl_category = "PatBlend"
     bl_options = {"DEFAULT_CLOSED"}
 
-class PATBLEND_PT_Settings(Panel, bpy.types.Panel):
+class PATBLEND_PT_Settings(Panel, bpy.types.Panel):          # Main Settings panel
     bl_idname = "PATBLEND_PT_Settings"
     bl_label = "Settings"
 
@@ -937,7 +941,7 @@ class PATBLEND_PT_Settings(Panel, bpy.types.Panel):
             layout.operator("patblend.activate")
             return
 
-class PATBLEND_PT_SettingsQuick(Panel, bpy.types.Panel):
+class PATBLEND_PT_SettingsQuick(Panel, bpy.types.Panel):     # Quick Settings panel
     bl_parent_id = "PATBLEND_PT_Settings"
     bl_label = "Quick Settings"
 
@@ -978,7 +982,7 @@ class PATBLEND_PT_SettingsQuick(Panel, bpy.types.Panel):
         row.prop(prop, "textInfo")
         layout.separator()
 
-class PATBLEND_PT_SettingsLinks(Panel, bpy.types.Panel):
+class PATBLEND_PT_SettingsLinks(Panel, bpy.types.Panel):     # Links panel
     bl_parent_id = "PATBLEND_PT_Settings"
     bl_label = "PatBlend Links"
     
@@ -1025,7 +1029,7 @@ class PATBLEND_PT_SettingsLinks(Panel, bpy.types.Panel):
         row.operator("patblend.open_git_releases")
         layout.separator()
 
-class PATBLEND_PT_RenderSetup(Panel, bpy.types.Panel):
+class PATBLEND_PT_RenderSetup(Panel, bpy.types.Panel):       # Main Render Setup
     bl_idname = "PATBLEND_PT_RenderSetup"
     bl_label = "Render Setup"
 
@@ -1049,7 +1053,7 @@ class PATBLEND_PT_RenderSetup(Panel, bpy.types.Panel):
             layout.label(text = "Select exactly one render engine.")
             layout.separator()
 
-class PATBLEND_PT_RenderEngine(Panel, bpy.types.Panel):
+class PATBLEND_PT_RenderEngine(Panel, bpy.types.Panel):      # Engine settings panel
     bl_parent_id = "PATBLEND_PT_RenderSetup"
     bl_label = "Engine Specific"
 
@@ -1099,7 +1103,7 @@ class PATBLEND_PT_RenderEngine(Panel, bpy.types.Panel):
             layout.label(text = "Select exactly one render engine.")
             layout.separator()
 
-class PATBLEND_PT_OutputSettings(Panel, bpy.types.Panel):
+class PATBLEND_PT_OutputSettings(Panel, bpy.types.Panel):    # Output settings
     bl_parent_id = "PATBLEND_PT_RenderSetup"
     bl_label = "Output Settings"
 
@@ -1133,7 +1137,7 @@ class PATBLEND_PT_OutputSettings(Panel, bpy.types.Panel):
 
         layout.separator()
 
-class PATBLEND_PT_Search(Panel, bpy.types.Panel):
+class PATBLEND_PT_Search(Panel, bpy.types.Panel):            # Quick Search
     bl_idname = "PATBLEND_PT_Search"
     bl_label = "Quick Search"
 
@@ -1161,7 +1165,7 @@ class PATBLEND_PT_Search(Panel, bpy.types.Panel):
 
         layout.separator()
 
-class PATBLEND_PT_Codec(Panel, bpy.types.Panel):
+class PATBLEND_PT_Codec(Panel, bpy.types.Panel):             # Codec
     bl_idname = "PATBLEND_PT_Codec"
     bl_label = "Coder-Decoder"
     
@@ -1280,7 +1284,7 @@ class PATBLEND_PT_Codec(Panel, bpy.types.Panel):
 
         layout.separator()
 
-class PATBLEND_PT_UnitMani(Panel, bpy.types.Panel):
+class PATBLEND_PT_UnitMani(Panel, bpy.types.Panel):          # Unit Main
     bl_idname = "PATBLEND_PT_UnitMani"
     bl_label = "Unit Manipulator"
 
@@ -1292,7 +1296,7 @@ class PATBLEND_PT_UnitMani(Panel, bpy.types.Panel):
         if activated == False:
             return
 
-class PATBLEND_PT_UnitLength(Panel, bpy.types.Panel):
+class PATBLEND_PT_UnitLength(Panel, bpy.types.Panel):        # Length
     bl_label = "Length"
     bl_parent_id = "PATBLEND_PT_UnitMani"
 
@@ -1461,7 +1465,7 @@ class PATBLEND_PT_UnitLength(Panel, bpy.types.Panel):
             layout.label(text = "Please select exactly one function.")
             layout.separator()
 
-class PATBLEND_PT_UnitTime(Panel, bpy.types.Panel):
+class PATBLEND_PT_UnitTime(Panel, bpy.types.Panel):          # Time
     bl_label = "Time"
     bl_parent_id = "PATBLEND_PT_UnitMani"
 
@@ -1584,7 +1588,7 @@ class PATBLEND_PT_UnitTime(Panel, bpy.types.Panel):
 
 
 
-classess = (PatBlendProps,        # There is an extra 's' to keep the letter count a multiple of 4.
+classess = (PatBlendProps,    # There is an extra 's' to keep the letter count a multiple of 4.
            
             PATBLEND_OT_Activate,
             PATBLEND_OT_DisablePrompt,
@@ -1617,17 +1621,17 @@ classess = (PatBlendProps,        # There is an extra 's' to keep the letter cou
             PATBLEND_PT_UnitLength,
             PATBLEND_PT_UnitTime)
 
-def register():
+def register():               # Runs each class
     from bpy.utils import register_class
     for cls in classess:
         register_class(cls)
     bpy.types.Scene.patblend = PointerProperty(type = PatBlendProps)
     
-def unregister():
+def unregister():             # Unruns each class
     from bpy.utils import unregister_class
     for cls in reversed(classess):
         unregister_class(cls)
     del bpy.types.Scene.patblend
     
-if __name__ == "__main__":
+if __name__ == "__main__":    # Calls Register
     register()
