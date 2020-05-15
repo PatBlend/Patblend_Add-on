@@ -1680,6 +1680,7 @@ class PATBLEND_PT_Timer(Panel, bpy.types.Panel):
         row.prop(prop, "timerMin")
         row.prop(prop, "timerSec")
         layout.separator()
+a
 '''
 
 classess = (PatBlendProps,                                   # There is an extra 's' to keep the letter count a multiple of 4.
