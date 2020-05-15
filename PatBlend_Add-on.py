@@ -44,6 +44,12 @@ from bpy.types import (Panel,                                # Import Blender UI
                        PropertyGroup)
 
 
+########## Global Variables ##########
+PatblendTimerStarted = False
+PatblendTimerRemainSec = 0
+PatblendTimerStartTime = ""
+
+
 ########## Other Functions ##########
 def GetSize(theme, type):                                    # This function calculates the sizes for Size Theme.
     if theme == '0':       # (1, 1, 1, 1)
@@ -390,6 +396,25 @@ class PatBlendProps(PropertyGroup):
         name = "Create Datetime Stamp in Text",
         description = "Creates a log of when and what day the code was created.",
         default = False
+    )
+
+    # Timer
+    timerHour: IntProperty(
+        name = "Hours",
+        description = "Amount of hours to start the timer with.",
+        default = 0, min = 0
+    )
+
+    timerMin: IntProperty(
+        name = "Minutes",
+        description = "Amount of minutes to start the timer with",
+        default = 0, min = 0, max = 59
+    )
+
+    timerSec: FloatProperty(
+        name = "Seconds",
+        description = "Amount of seconds to start the timer with.",
+        default = 0, min = 0, max = 60
     )
 
 
@@ -819,7 +844,7 @@ class PATBLEND_OT_RenderSetup(Operator):                     # Operator for Rend
                 bpy.context.scene.render.tile_x = 256
                 bpy.context.scene.render.tile_y = 256
             bpy.context.scene.cycles.progressive = 'BRANCHED_PATH'
-            bpy.context.scene.cycles.transmission_samples = 3
+            bpy.context.scene.cycles.transmission_samples = 2
 
             minBounce = math.floor(prop.bounces / 1.5)
             medBounce = prop.bounces
@@ -928,7 +953,26 @@ class PATBLEND_OT_CreateText(Operator):                      # Creates text for 
         newText.write("__________________________________________________" + "\n\n")
 
         return {'FINISHED'}
+'''
+class PATBLEND_OT_StartTimer(Operator):
+    bl_label = "Start Timer"
+    bl_description = "Starts the countdown of the timer."
+    bl_idname = "patblend.start_timer"
 
+    def execute(self, context):
+        global PatblendTimerStarted
+        PatblendTimerStarted = True
+        global PatblendTimerStartTime
+        PatblendTimerStartTime = GetDateTime()
+        
+class PATBLEND_OT_EndTimer(Operator):
+    bl_label = "End Timer"
+    bl_description = "Ends the countdown of the timer."
+    bl_idname = "patblend.end_timer"
+
+    def execute(self, context):
+        global
+'''
 
 ########## Panels ##########
 class Panel:                                                 # Base panel that shows up in Sidebar
@@ -984,13 +1028,10 @@ class PATBLEND_PT_SettingsQuick(Panel, bpy.types.Panel):     # Quick Settings pa
         row.scale_y = GetSize(theme, 3)
         row.prop(prop, "sizeTheme")
 
-        row = layout.row()                # Print info in console
+        row = layout.row()                # Console, Text logging
         row.scale_y = GetSize(theme, 2)
-        row.prop(prop, "consoleInfo")
-
-        row = layout.row()                # Text logging
-        row.scale_y = GetSize(theme, 2)
-        row.prop(prop, "textInfo")
+        row.prop(prop, "consoleInfo", text = "Console Log")
+        row.prop(prop, "textInfo", text = "Text Log")
         layout.separator()
 
 class PATBLEND_PT_SettingsLinks(Panel, bpy.types.Panel):     # Links panel
@@ -1621,12 +1662,28 @@ class PATBLEND_PT_UnitTime(Panel, bpy.types.Panel):          # Time
         elif function == '2':
             layout.label(text = "will be added later")
             layout.separator()
+'''
+class PATBLEND_PT_Timer(Panel, bpy.types.Panel):
+    bl_label = "Timer"
+    bl_idname = "PATBLEND_PT_Timer"
 
+    def draw(self, context):
+        scene = context.scene
+        prop = scene.patblend
+        theme = prop.sizeTheme
 
+        layout.label(text = "Enter time in hours, minutes, and seconds.")
+        
+        row = layout.row(align = True)
+        row.scale_y = GetSize(theme, 2)
+        row.prop(prop, "timerHour")
+        row.prop(prop, "timerMin")
+        row.prop(prop, "timerSec")
+        layout.separator()
+'''
 
 classess = (PatBlendProps,                                   # There is an extra 's' to keep the letter count a multiple of 4.
-            # Properties
-            # Operators
+            
             PATBLEND_OT_Activate,           # Activate button
             
             PATBLEND_OT_DisablePrompt,      # Disable/Uninstall
@@ -1651,7 +1708,6 @@ classess = (PatBlendProps,                                   # There is an extra
             
             PATBLEND_OT_Search,             # Search
 
-            # Panels
             PATBLEND_PT_Settings,           # Settings
             PATBLEND_PT_SettingsQuick,
             PATBLEND_PT_SettingsLinks,
@@ -1666,7 +1722,9 @@ classess = (PatBlendProps,                                   # There is an extra
             
             PATBLEND_PT_UnitMani,           # Unit Manipulator
             PATBLEND_PT_UnitLength,
-            PATBLEND_PT_UnitTime)
+            PATBLEND_PT_UnitTime,)
+            
+            #PATBLEND_PT_Timer)
 
 def register():                                              # Runs each class
     from bpy.utils import register_class
