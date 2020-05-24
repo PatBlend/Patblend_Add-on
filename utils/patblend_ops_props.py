@@ -351,18 +351,15 @@ class PatBlendProps(PropertyGroup):
         default = 0, min = 0, max = 60
     )
 
-    libAsset: EnumProperty(
-        name = "Asset Name",
-        description = "The name of the asset",
-        items = [
-            ('pear001', "Pear001", "Pear001"),
-            ('rock001', "Rock001", "Rock001")
-        ]
+    libWord: StringProperty(
+        name = "Word",
+        description = "The activation word required to download assets."
     )
 
 
 def register():                                              # Runs each class
     print("BLAH")
+    from bpy.utils import register_class
     bpy.utils.register_class(PatBlendProps)
     bpy.types.Scene.patblend = PointerProperty(type = PatBlendProps)
     print("Props Registered")

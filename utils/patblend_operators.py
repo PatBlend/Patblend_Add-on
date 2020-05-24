@@ -590,7 +590,10 @@ class PATBLEND_OT_LibPreview(Operator):
     def execute(self, context):
         scene = context.scene
         prop = scene.patblend
-        name = prop.libAsset
+        name = context.scene.my_thumbnails
+        name = name.replace('.jpg', '')
+        name = name.replace('.png', '')
+        name = name.replace('.jpeg', '')
         
         text = CheckText()
         textWrite = prop.textInfo
@@ -612,7 +615,12 @@ class PATBLEND_OT_LibDownload(Operator):
     def execute(self, context):
         scene = context.scene
         prop = scene.patblend
-        name = prop.libAsset
+        word = prop.libWord
+        
+        name = context.scene.my_thumbnails
+        name = name.replace('.jpg', '')
+        name = name.replace('.png', '')
+        name = name.replace('.jpeg', '')
         
         text = CheckText()
         textWrite = prop.textInfo
@@ -623,7 +631,24 @@ class PATBLEND_OT_LibDownload(Operator):
             text.write("Downloaded asset\n")
             text.write("______________________________\n\n")
 
-        bpy.ops.wm.url_open(url = "https://tinyurl.com/patblend-" + name + "-download")
+        if prop.libWord == "PatBlendLibrary":
+            bpy.ops.wm.url_open(url = "https://tinyurl.com/patblend-" + name + "-download")
+        else:
+            bpy.ops.patblend.library_fail_notice('INVOKE_DEFAULT')
+        return {'FINISHED'}
+
+class PATBLEND_OT_LibraryFail(Operator):              # Confirms Download all
+    bl_label = "Library Failed"
+    bl_idname = "patblend.library_fail_notice"
+
+    def invoke(self, context, event):
+        return context.window_manager.invoke_props_dialog(self)
+
+    def draw(self, context):
+        col = self.layout.column()
+        col.label(text = "The activation word is incorrect.")
+
+    def execute(self, context):
         return {'FINISHED'}
 
 classess = (PATBLEND_OT_Activate,           # Activate button
@@ -650,7 +675,8 @@ classess = (PATBLEND_OT_Activate,           # Activate button
             
             PATBLEND_OT_Search,
             PATBLEND_OT_LibDownload,
-            PATBLEND_OT_LibPreview)
+            PATBLEND_OT_LibPreview,
+            PATBLEND_OT_LibraryFail)
 
 def register():                                              # Runs each class
     from bpy.utils import register_class

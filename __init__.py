@@ -31,9 +31,7 @@ bl_info = {
 
 import bpy
 
-from .utils import patblend_ops_props
-from .utils import patblend_operators
-from .utils import patblend_ui
+from .utils import patblend_ops_props, patblend_operators, patblend_ui
 
 
 def register():                                              # Runs each class

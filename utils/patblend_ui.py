@@ -16,7 +16,8 @@
 #
 # ##### END GPL LICENSE BLOCK #####
 
-import bpy, math, time, datetime
+import bpy, math, time, datetime, os
+import bpy.utils.previews
 from bpy.props import (StringProperty,                       # Import Blender python properties
                        BoolProperty, 
                        IntProperty, 
@@ -29,6 +30,9 @@ from bpy.types import (Panel,                                # Import Blender UI
                        Operator, 
                        PropertyGroup)
 from . import patblend_operators
+
+custIcons = None
+preview_collections = {}
 
 def GetSize(theme, type):                                    # This function calculates the sizes for Size Theme.
     if theme == '0':       # (1, 1, 1, 1)
@@ -56,6 +60,23 @@ def GetSize(theme, type):                                    # This function cal
             return 3.5
     elif theme == '4':     # (2, 3.5, 5, 6.5)
         return type * 1.5 + 0.5
+
+def generate_previews():
+    # We are accessing all of the information that we generated in the register function below
+    pcoll = preview_collections["thumbnail_previews"]
+    image_location = pcoll.images_location
+    VALID_EXTENSIONS = ('.png', '.jpg', '.jpeg')
+    
+    enum_items = []
+    
+    # Generate the thumbnails
+    for i, image in enumerate(os.listdir(image_location)):
+        if image.endswith(VALID_EXTENSIONS):
+            filepath = os.path.join(image_location, image)
+            thumb = pcoll.load(filepath, filepath, 'IMAGE')
+            enum_items.append((image, image, "", thumb.icon_id, i))
+            
+    return enum_items
 
 class Panel:                                                 # Base panel that shows up in Sidebar
     bl_space_type = "VIEW_3D"
@@ -750,17 +771,23 @@ class PATBLEND_PT_LibraryMain(Panel, bpy.types.Panel):
     bl_idname = "PATBLEND_PT_LibraryMain"
 
     def draw(self, context):
+        global custIcons
         layout = self.layout
         prop = context.scene.patblend
         theme = prop.sizeTheme
+
+        row = layout.row()
+        row.scale_y = GetSize(theme, 2)
+        row.prop(prop, "libWord")
         
-        layout.scale_y = GetSize(theme, 2)
-        layout.prop(prop, "libAsset")
+        row = layout.row()
+        row.template_icon_view(context.scene, 'my_thumbnails')
 
         row = layout.row(align = True)
         row.scale_y = GetSize(theme, 3)
         row.operator("patblend.library_preview")
         row.operator("patblend.library_download")
+
 
 classess = (PATBLEND_PT_Settings,           # Settings
             PATBLEND_PT_SettingsQuick,
@@ -780,15 +807,40 @@ classess = (PATBLEND_PT_Settings,           # Settings
 
             PATBLEND_PT_LibraryMain)        # Library
             
-
 def register():                                              # Runs each class
-    patblend_operators.register()
+    from bpy.types import Scene
+    from bpy.props import StringProperty, EnumProperty
     from bpy.utils import register_class
+    
+    global custIcons
+    custIcons = bpy.utils.previews.new()
+    scriptPath = bpy.path.abspath(os.path.dirname(__file__))
+    iconsDir = os.path.join(os.path.dirname(scriptPath), "icons")
+    custIcons.load("icon", os.path.join(iconsDir, "icon.png"), 'IMAGE')
+
+    pcoll = bpy.utils.previews.new()
+    pcoll.images_location = os.path.join(os.path.dirname(__file__), "assets")
+    preview_collections["thumbnail_previews"] = pcoll
+    bpy.types.Scene.my_thumbnails = EnumProperty(
+        items=generate_previews()
+    )
+
+    patblend_operators.register()
     for cls in classess:
         register_class(cls)
     
 def unregister():                                            # Unruns each class
-    patblend_operators.unregister()
+    from bpy.types import WindowManager
     from bpy.utils import unregister_class
+    
+    global custIcons
+    bpy.utils.previews.remove(custIcons)
+    patblend_operators.unregister()
+    
+    for pcoll in previewCollections.values():
+        bpy.utils.previews.remove(pcoll)
+    previewCollections.clear()
+    del bpy.types.Scene.my_thumbnails
+    
     for cls in reversed(classess):
         unregister_class(cls)
