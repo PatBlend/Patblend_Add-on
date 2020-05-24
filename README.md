@@ -2,7 +2,7 @@
 <i>Last updated for Version 1.0.2</i><br><br>
 
 This add-on is a compilation of all the add-ons <b>PatBlend</b> has created. 
-At the time of this writing, the four add-ons that make up this are <b>Render Setup</b>, <b>Unit Converter</b>, <b>Coder-Decoder</b> and <b>Quick Search</b>. 
+At the time of this writing, the five add-ons that make up this are <b>PatBlend Library</b>, <b>Render Setup</b>, <b>Unit Converter</b>, <b>Coder-Decoder</b> and <b>Quick Search</b>. 
 All the options can be found in <i>3D View >> Sidebar ('n') >> PatBlend</i>
 
 
@@ -57,6 +57,14 @@ Before you start using the Add-on, you need to Activate it. To activate it, simp
   <li>Press the "Create Text" button to create a text datablock so you don't have to copy each character by hand.<li>
 </ol>
 
+<b>PatBlend Library</b>
+<ol>
+  <li>Open a new Blender file</li>
+  <li>Press "n" to open the 3D Viewport Sidebar.</li>
+  <li>Select the panel titled "PatBlend" and open the section named "PatBlend Library"</li>
+  <li>Choose an asset from the panel</li>
+  <li>Click either preview or download.</li>
+
 <h1>Description</h1>
 
 <b>Render Setup:</b>
@@ -70,6 +78,10 @@ Need to search for a reference image or a texture, but only have one monitor? Qu
 
 <b>Coder-Decoder:</b>
 If you need to send a secret message, you can code it with the PatBlend Coder-Decoder. People without this Add-on will be baffled! This add-on supports three codecs and a custom codec at the time of this writing, but more are going to be added soon.
+
+<b>PatBlend Library</b>
+This connects you to the online PatBlend Library. Premium assets from PatBlend can only be accessed through this add-on.
+
 <br>
 <br>
 <a href = "https://forms.gle/rGULhrpfpCta7CWj9">Report a Bug</a>
