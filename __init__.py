@@ -20,7 +20,7 @@ bl_info = {
     "name":        "PatBlend Add-on",                                 # Name of the Add-on
     "description": "A compilation of all Add-ons made by PatBlend",   # Description of the Add-on
     "author":      "Patrick Huang",                                   # Author(s)
-    "version":     (1, 0, 2),                                         # Current Version
+    "version":     (1, 0, 3),                                         # Current Version
     "blender":     (2, 80, 0),                                        # Minimum Blender version required to run
     "location":    "3D View >> Sidebar >> PatBlend",                  # Where to find the content of the Add-on
     "warning":     "",                                                # Warning icon in Preferences
