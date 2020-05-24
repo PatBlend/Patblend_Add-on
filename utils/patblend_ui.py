@@ -776,6 +776,10 @@ class PATBLEND_PT_LibraryMain(Panel, bpy.types.Panel):
         prop = context.scene.patblend
         theme = prop.sizeTheme
 
+        activated = prop.activated
+        if activated == False:
+            return
+
         row = layout.row()
         row.scale_y = GetSize(theme, 2)
         row.prop(prop, "libWord")

@@ -1,5 +1,5 @@
 # Patblend_Add-on
-<i>Last updated for Version 1.0.2</i><br><br>
+<i>Last updated for Version 1.0.3</i><br><br>
 
 This add-on is a compilation of all the add-ons <b>PatBlend</b> has created. 
 At the time of this writing, the five add-ons that make up this are <b>PatBlend Library</b>, <b>Render Setup</b>, <b>Unit Converter</b>, <b>Coder-Decoder</b> and <b>Quick Search</b>. 
