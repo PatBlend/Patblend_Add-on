@@ -64,6 +64,7 @@ Before you start using the Add-on, you need to Activate it. To activate it, simp
   <li>Select the panel titled "PatBlend" and open the section named "PatBlend Library"</li>
   <li>Choose an asset from the panel</li>
   <li>Click either preview or download.</li>
+</ol>
 
 <h1>Description</h1>
 
