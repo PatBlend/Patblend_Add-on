@@ -1,6 +1,5 @@
 # Patblend_Add-on
 <i>Last updated for Version 1.0.2</i><br><br>
-<b>Note: </b>There are two Python files included: init and PatBlend_Add-on. The init is used for .zip file installing (customer use), while the other file is used for python file installing (developer use).<br>
 
 This add-on is a compilation of all the add-ons <b>PatBlend</b> has created. 
 At the time of this writing, the four add-ons that make up this are <b>Render Setup</b>, <b>Unit Converter</b>, <b>Coder-Decoder</b> and <b>Quick Search</b>. 
@@ -97,4 +96,8 @@ If you need to send a secret message, you can code it with the PatBlend Coder-De
 <ul>
   <li>Initial release</li>
   <li>Contains 3 sub-add-ons: Render Setup, Unit Converter, and Quick Search.</li>
-</ul>
+</ul><br><br><br>
+<h1>Secret Word:</h1>
+Great Job! You made it to the end of the README! As a reward, PatBlend will provide you with the secret word required to use the PatBlend Library!<br><br>
+The secret word is:<br>
+<b>PatBlendLibrary</b>
