@@ -28,10 +28,12 @@ bl_info = {
     "tracker_url": "https://forms.gle/rGULhrpfpCta7CWj9",             # Report a Bug link
     "category":    "PatBlend"}                                        # Category of the Add-on
 
-
-import bpy
-
-from .utils import patblend_ops_props, patblend_operators, patblend_ui
+try:
+    import bpy
+    from .utils import patblend_ops_props, patblend_operators, patblend_ui
+except Exception:
+    print('Module Import failed. Please check that system files are in their original place.')
+    print("Error: " + str(Exception))
 
 
 def register():                                              # Runs each class

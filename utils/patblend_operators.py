@@ -28,6 +28,7 @@ from bpy.types import (Panel,                                # Import Blender UI
                        Menu, 
                        Operator, 
                        PropertyGroup)
+from .utils patblend_ui import PatBlendCodecCoded
 
 def GetDateTime():                                           # Gets Date and Time from datetime module and converts it into a list of strings.
     raw = str(datetime.datetime.now())  # yyyy-mm-dd hh:mm:ss.ssssss
@@ -43,6 +44,7 @@ def CheckText():                                             # Checks if there i
         PatText = bpy.data.texts.new("PatBlend_Logging") # Sets "PatText" as the text
         PatText.cursor_set(1234567890, character = 1234567890)
     return PatText
+
 
 class PATBLEND_OT_Activate(Operator):                        # Activates the Add-on
     bl_label = "Activate Add-on"
@@ -647,6 +649,7 @@ class PATBLEND_OT_LibraryFail(Operator):              # Confirms Download all
     def draw(self, context):
         col = self.layout.column()
         col.label(text = "The activation word is incorrect.")
+        col.label(text = 'Check GitHub for the word.')
 
     def execute(self, context):
         return {'FINISHED'}

@@ -78,6 +78,7 @@ def generate_previews():
             
     return enum_items
 
+
 class Panel:                                                 # Base panel that shows up in Sidebar
     bl_space_type = "VIEW_3D"
     bl_region_type = "UI"

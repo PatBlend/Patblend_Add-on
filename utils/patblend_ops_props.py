@@ -358,11 +358,9 @@ class PatBlendProps(PropertyGroup):
 
 
 def register():                                              # Runs each class
-    print("BLAH")
     from bpy.utils import register_class
     bpy.utils.register_class(PatBlendProps)
     bpy.types.Scene.patblend = PointerProperty(type = PatBlendProps)
-    print("Props Registered")
     
 def unregister():                                            # Unruns each class
     from bpy.utils import unregister_class

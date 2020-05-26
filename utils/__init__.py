@@ -18,3 +18,4 @@
 
 
 '''This file is here to let Blender know that the utils folder is a module.'''
+'''You may ignore this file, but do not delete it.'''
